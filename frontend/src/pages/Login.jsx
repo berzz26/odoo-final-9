@@ -48,16 +48,16 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[#1E212B] min-h-screen w-screen text-[#EAECEE] font-sans flex items-center justify-center p-4">
+    <div className="bg-[#FCEFCB] min-h-screen w-screen text-[black] font-sans flex items-center justify-center p-4">
      
       <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center mb-6">Login Screen</h1>
+        <h1 className="text-3xl font-bold text-center mb-6">Welcome Back!</h1>
         
-        <form onSubmit={handleSubmit} className="bg-[#2D3039] border-2 border-[#4A4E5A] rounded-lg p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-[#FAD59A] border-2 border-[#4A4E5A] rounded-lg p-8 space-y-6">
           
           {/* Photo Placeholder */}
           <div className="flex justify-center">
-            <div className="w-24 h-24 rounded-full bg-[#1E212B] border-2 border-dashed border-[#4A4E5A] flex items-center justify-center text-gray-400">
+            <div className="w-24 h-24 rounded-full bg-[white] border-2 border-dashed border-[#4A4E5A] flex items-center justify-center text-gray-400">
               Photo
             </div>
           </div>
@@ -72,7 +72,7 @@ const Login = () => {
                 placeholder="Email Address" 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
-                className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" 
+                className="w-full bg-[white] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" 
                 required 
               />
             </div>
@@ -83,7 +83,7 @@ const Login = () => {
                 placeholder="Password" 
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
-                className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" 
+                className="w-full bg-[white] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" 
                 required 
               />
             </div>
@@ -95,7 +95,7 @@ const Login = () => {
             <div className="text-center pt-4">
               <button 
                 type="submit" 
-                className="w-full bg-[#8338EC] text-white rounded-full px-8 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 font-semibold disabled:bg-gray-500 disabled:cursor-not-allowed" 
+                className="w-full bg-[white] text-white rounded-full px-8 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 font-semibold disabled:bg-gray-500 disabled:cursor-not-allowed" 
                 disabled={loading}
               >
                 {loading ? 'Logging in...' : 'Login Button'}
