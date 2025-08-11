@@ -56,7 +56,7 @@ export default function NewTrip() {
         console.log("Creating new trip:", {
             name: tripName,
             country,
-            stops,       // array of cities
+            stops,       
             startDate: start,
             endDate: end,
         });
@@ -112,7 +112,6 @@ export default function NewTrip() {
                             </div>
                         </div>
 
-                        {/* Country */}
                         <div className="space-y-2">
                             <Label>Country</Label>
                             <Select
@@ -120,7 +119,7 @@ export default function NewTrip() {
                                 onValueChange={(val) => {
                                     setCountry(val);
                                     setCity("");
-                                    setStops([]); // reset stops when country changes
+                                    setStops([]); 
                                 }}
                             >
                                 <SelectTrigger className="w-full !bg-white" aria-label="Select country">
@@ -134,7 +133,6 @@ export default function NewTrip() {
                             </Select>
                         </div>
 
-                        {/* Stops (Cities) */}
                         <div className="space-y-3">
                             <Label>Stops (cities)</Label>
                             <div className="flex gap-2">
