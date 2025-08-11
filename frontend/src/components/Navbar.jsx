@@ -87,6 +87,9 @@ export default function Navbar() {
                 <DropdownMenuItem asChild>
                   <Link to="/newtrip">Create new trip</Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/triplisting">listMyTrips</Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )}
