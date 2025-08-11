@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
+    Card, CardHeader, CardTitle,
 } from "@/components/ui/card";
 
 // The component is now responsible for fetching its own data.
@@ -21,7 +21,9 @@ export default function ItenarySection() {
                     throw new Error('Authorization token not found. Please log in.');
                 }
 
-                // Fetch data from the backend endpoint
+                // Fetch data from the backend endpoint.
+                // Using an environment variable is best practice, but you can replace it
+                // with your local IP: 'http://192.168.103.71:3000/api/trips'
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -33,7 +35,7 @@ export default function ItenarySection() {
                 }
 
                 const data = await response.json();
-                // Assuming the API returns an array of objects with { id, title, cover }
+                // Set the fetched data to state
                 setTrips(data);
 
             } catch (err) {
@@ -49,8 +51,8 @@ export default function ItenarySection() {
     return (
         <div className='flex min-h-screen w-screen bg-gray-50 p-6'>
             <div>
-                <div className='text-4xl font-bold'>Let's create an itinary</div>
-                <div className='italic'>You have the following planned trips.</div>
+                
+                <div className='text-4xl italic'>You have the following planned trips.</div>
 
                 <div className='my-10'>
                     {/* Conditional Rendering based on fetch state */}
@@ -66,12 +68,17 @@ export default function ItenarySection() {
                                         <Card className="w-80 h-80 transition-transform group-hover:scale-105">
                                             <CardHeader>
                                                 <img
-                                                    src={t.cover} // Assumes 'cover' property exists in fetched data
-                                                    alt={t.title} // Assumes 'title' property exists
+                                                    // CORRECTED: Use 'coverPhoto' from your API data
+                                                    src={t.coverPhoto}
+                                                    // CORRECTED: Use 'name' for the alt text
+                                                    alt={t.name}
                                                     className="h-40 w-full object-cover rounded-md"
+                                                    // Add a fallback for broken image links
+                                                    onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/600x400/EEE/31343C?text=Image+Not+Found'; }}
                                                 />
                                                 <CardTitle className="py-2 text-center">
-                                                    {t.title}
+                                                    {/* CORRECTED: Display the trip 'name' */}
+                                                    {t.name}
                                                 </CardTitle>
                                             </CardHeader>
                                         </Card>
