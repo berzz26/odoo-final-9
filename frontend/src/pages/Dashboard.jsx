@@ -3,46 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-
-// Placeholder data with real image URLs to ensure rendering works
-const mockTrips = [
-  {
-    "id": "0ee4cd1f-64ca-4755-bff3-67be15fbc48c",
-    "userId": "568c6996-1717-43e2-9b4d-4bc2effdaf16",
-    "name": "Backpacking Through Europe",
-    "description": "Exploring cities, culture, and food across Europe.",
-    "startDate": "2025-09-01T00:00:00.000Z",
-    "endDate": "2025-09-20T00:00:00.000Z",
-    "coverPhoto": "https://images.unsplash.com/photo-1473224023604-51645e54d3d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjkzNHwwfDF8c2VhcmNofDE3fHxldXJvcGUlMjB0cmF2ZWx8ZW58MHx8fHwxNjk5OTg1MzY1fDA&ixlib=rb-4.0.3&q=80&w=1080",
-    "createdAt": "2025-08-11T14:23:27.009Z",
-    "updatedAt": "2025-08-11T14:23:27.009Z",
-    "stops": [
-      { "city": "Paris", "country": "France" },
-      { "city": "Rome", "country": "Italy" }
-    ],
-  },
-  {
-    "id": "856f993d-fb84-4a99-9bb3-1e5f95527dad",
-    "userId": "568c6996-1717-43e2-9b4d-4bc2effdaf16",
-    "name": "Beach Getaway in Thailand",
-    "description": "Relaxing beaches, scuba diving, and night markets.",
-    "startDate": "2025-12-05T00:00:00.000Z",
-    "endDate": "2025-12-15T00:00:00.000Z",
-    "coverPhoto": "https://images.unsplash.com/photo-1549472336-f6d3f2955f0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjkzNHwwfDF8c2VhcmNofDV8fHRoYWlsYW5kJTIwYmVhY2h8ZW58MHx8fHwxNjk5OTg1MzY3fDA&ixlib=rb-4.0.3&q=80&w=1080",
-    "createdAt": "2025-08-11T14:23:27.307Z",
-    "updatedAt": "2025-08-11T14:23:27.307Z",
-    "stops": [
-      { "city": "Phuket", "country": "Thailand" },
-      { "city": "Krabi", "country": "Thailand" }
-    ],
-  }
-];
-
 const Dashboard = () => {
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isAuth, setIsAuth] = useState(true); // For this example, we assume auth is true to show the trips
+  const [isAuth, setIsAuth] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -67,15 +32,16 @@ const Dashboard = () => {
             });
 
             if (!tripsResponse.ok) {
-              // Using mock data for rendering purposes if API fails
-              console.error('API call failed, using mock data.');
-              const sortedTrips = mockTrips.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
-              setTrips(sortedTrips);
-              // Instead of throwing an error, we can use a fallback.
-              // throw new Error('Failed to fetch trips');
+              throw new Error('Failed to fetch trips');
             } else {
               const data = await tripsResponse.json();
-              const sortedTrips = data.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+              
+              // Filter to only show past trips (where end date has passed)
+              const currentDate = new Date();
+              const pastTrips = data.filter(trip => new Date(trip.endDate) < currentDate);
+              
+              // Sort by start date (most recent first)
+              const sortedTrips = pastTrips.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
               setTrips(sortedTrips);
             }
           } else {
@@ -114,14 +80,13 @@ const Dashboard = () => {
 
     if (isAuth) {
       if (trips.length === 0) {
-        return <p className="text-gray-400">You haven't planned any trips yet.</p>;
+        return <p className="text-gray-400">You haven't completed any trips yet.</p>;
       }
 
       return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {trips.map((trip) => (
             <div key={trip.id} className="bg-[#2D3039] border border-[#4A4E5A] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              {/* This is the key change: ensure 'coverPhoto' is a valid URL */}
               <img
                 src={trip.coverPhoto}
                 alt={`Cover for ${trip.name}`}
@@ -131,7 +96,7 @@ const Dashboard = () => {
                 <h4 className="text-xl font-bold mb-1">{trip.name}</h4>
                 <p className="text-sm text-gray-400 mb-2">{trip.description}</p>
                 <div className="flex items-center text-sm text-gray-500 mb-2">
-                  <svg className="w-4 h-4 mr-1 text-[#8338EC]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"></path></svg>
+                  <svg className="w-4 h-4 mr-1 text-[#8338EC]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6 2a1 1 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 100-2H6z" clipRule="evenodd"></path></svg>
                   <span>{formatDate(trip.startDate)} - {formatDate(trip.endDate)}</span>
                 </div>
                 <div className="flex items-center text-sm text-gray-500">
