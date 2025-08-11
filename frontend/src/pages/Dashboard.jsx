@@ -118,9 +118,9 @@ const Dashboard = () => {
       }
 
       return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 !bg-#FCEFCB">
           {trips.map((trip) => (
-            <div key={trip.id} className="bg-[#2D3039] border border-[#4A4E5A] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div key={trip.id} className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               {/* This is the key change: ensure 'coverPhoto' is a valid URL */}
               <img
                 src={trip.coverPhoto}
@@ -168,39 +168,39 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="bg-[#1E212B] min-h-screen w-screen text-[#EAECEE] font-sans">
+    <div className="bg-[#FCEFCB] min-h-screen w-screen text-[#EAECEE] font-sans">
       <div className="p-4 md:p-8 space-y-8 container mx-auto max-w-6xl">
         <div className="bg-[#2D3039] border border-[#4A4E5A] rounded-lg p-10 md:p-12 flex flex-col items-center justify-center text-center">
           <h2 className="text-4xl md:text-6xl text-white font-bold tracking-tight" style={{ fontFamily: '"Caveat", cursive' }}>
             Plan Your Next Adventure 🌍
           </h2>
-          <p className="text-gray-400 mt-4 text-lg">Your journey begins here.</p>
+          <p className="text-gray-400 mt-4 text-lg italic">Your journey begins here.</p>
         </div>
 
         <div className="flex flex-col md:flex-row items-stretch gap-4">
           <input
             type="text"
             placeholder="Search destinations..."
-            className="w-full md:flex-grow bg-[#2D3039] border border-[#4A4E5A] rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#8338EC] transition-colors"
+            className="w-full md:flex-grow bg-[#FAD59A] border border-[#4A4E5A] rounded-lg p-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#8338EC] transition-colors"
           />
-          <button className="w-full md:w-auto bg-[#2D3039] border border-[#4A4E5A] rounded-lg px-6 py-3 hover:border-[#8338EC] transition-colors">Group by</button>
-          <button className="w-full md:w-auto bg-[#2D3039] border border-[#4A4E5A] rounded-lg px-6 py-3 hover:border-[#8338EC] transition-colors">Filter</button>
-          <button className="w-full md:w-auto bg-[#2D3039] border border-[#4A4E5A] rounded-lg px-6 py-3 hover:border-[#8338EC] transition-colors">Sort by</button>
+          <button className="w-full md:w-auto !bg-[#FAD59A] border border-[#4A4E5A] rounded-lg px-6 py-3 hover:border-[#000000] transition-colors text-black">Group by</button>
+          <button className="w-full md:w-auto !bg-[#FAD59A] border border-[#4A4E5A] rounded-lg px-6 py-3 hover:border-[#000000] transition-colors text-black ">Filter</button>
+          <button className="w-full md:w-auto !bg-[#FAD59A] border border-[#4A4E5A] rounded-lg px-6 py-3 hover:border-[#000000] transition-colors text-black">Sort by</button>
         </div>
 
         <div>
-          <h3 className="text-2xl font-bold mb-4">Popular Regional Selections</h3>
+          <h3 className="text-2xl font-bold mb-4 text-black">Popular Regional Selections</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            <div className="bg-[#2D3039] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#8338EC] transition-colors"></div>
-            <div className="bg-[#2D3039] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#8338EC] transition-colors"></div>
-            <div className="bg-[#2D3039] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#8338EC] transition-colors"></div>
-            <div className="bg-[#2D3039] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#8338EC] transition-colors"></div>
-            <div className="bg-[#2D3039] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#8338EC] transition-colors"></div>
+            <div className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#000000] transition-colors"></div>
+            <div className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#000000] transition-colors"></div>
+            <div className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#000000] transition-colors"></div>
+            <div className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#000000] transition-colors"></div>
+            <div className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#000000] transition-colors"></div>
           </div>
         </div>
 
         <div>
-          <h3 className="text-2xl font-bold mb-4">
+          <h3 className="text-2xl font-bold mb-4 text-black">
             {isAuth ? "Your Previous Trips" : "Get Inspired for Your Next Trip"}
           </h3>
           {renderContent()}
