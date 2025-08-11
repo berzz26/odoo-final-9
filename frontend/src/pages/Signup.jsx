@@ -4,15 +4,12 @@ import { useNavigate, Link } from 'react-router-dom';
 const Signup = () => {
   const navigate = useNavigate();
 
-  // State for all form fields, ensuring all inputs are controlled
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    phone: '',
-    city: '',
     country: '',
-    additionalInfo: '',
+    
   });
 
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -40,7 +37,7 @@ const Signup = () => {
 
     try {
       // Step 1: Signup request
-      const signupResponse = await fetch(`http://localhost:3000/api/auth/signup`, {
+      const signupResponse = await fetch(`http://192.168.103.71:3000/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -48,8 +45,7 @@ const Signup = () => {
           email: formData.email,
           password: formData.password,
           country: formData.country,
-          phone: formData.phone,
-          city: formData.city,
+       
         }),
       });
 
@@ -66,7 +62,7 @@ const Signup = () => {
         const avatarFormData = new FormData();
         avatarFormData.append('avatar', avatarFile);
 
-        const avatarResponse = await fetch(`http://localhost:3000/api/upload/avatar`, {
+        const avatarResponse = await fetch(`http://192.168.103.71:3000/api/upload/avatar`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
           body: avatarFormData,
@@ -80,8 +76,8 @@ const Signup = () => {
       const expirationTime = Date.now() + 7 * 24 * 60 * 60 * 1000;
       localStorage.setItem('authToken', JSON.stringify({ token, expires: expirationTime }));
 
-      alert('Registration successful! Please log in.');
-      navigate('/login');
+      alert('Registration successful!');
+      navigate('/');
 
     } catch (err) {
       console.error('Registration process error:', err);

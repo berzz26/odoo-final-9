@@ -9,11 +9,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 
-const TOKEN_KEY = "token";
+const TOKEN_KEY = "authToken";
 function useAuthToken() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
-    const check = () => setIsLoggedIn(!!localStorage.getItem(TOKEN_KEY));
+    const check = () => setIsLoggedIn(localStorage.getItem(TOKEN_KEY.token));
+    console.log(TOKEN_KEY.token);
     check();
     window.addEventListener("storage", check);
     window.addEventListener("focus", check);

@@ -35,7 +35,6 @@ const Dashboard = () => {
           <button className="w-full h-15 md:w-auto !bg-[#FAD59A] border-2 border-[#4A4E5A] rounded-lg px-4 py-2 hover:border-gray-400">Sort by...</button>
         </div>
 
-        {/* --- Regional Selections Section --- */}
         <div>
           <h3 className="text-2xl text-black font-semibold mb-4 ">Popular Regional Selections</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -47,7 +46,7 @@ const Dashboard = () => {
           </div>
         </div>
         
-        {/* --- Previous Trips Section --- */}
+ 
         <div>
           <h3 className="text-2xl text-black font-semibold mb-4">Your Previous Trips</h3>
           <div className="flex flex-col md:flex-row gap-6">
