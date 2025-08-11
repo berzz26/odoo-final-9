@@ -3,12 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Calendar, MapPin, DollarSign, Clock } from 'lucide-react';
 
-// Helper function to format dates for better readability
+
 const formatDate = (dateString) => new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric', month: 'long', day: 'numeric'
 });
 
-// Helper function to format duration from minutes to a readable string
 const formatDuration = (minutes) => {
     if (!minutes) return "N/A";
     const hours = Math.floor(minutes / 60);
@@ -18,14 +17,12 @@ const formatDuration = (minutes) => {
 
 
 export default function TripItineraryPage() {
-    // Get the tripId from the URL (e.g., /trips/0ee4cd1f-64ca-4755-bff3-67be15fbc48c)
     const { tripId } = useParams(); 
     const [trip, setTrip] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Function to fetch the details of a single trip
         const fetchTripDetails = async () => {
             try {
                 const token = localStorage.getItem('authToken');
@@ -33,13 +30,13 @@ export default function TripItineraryPage() {
                     throw new Error('Authorization token not found. Please log in.');
                 }
                 
-                // Fetch details for the specific trip ID from your API
+              
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips/${tripId}`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 });
 
                 if (!response.ok) {
-                    // Handle cases where the trip is not found or another error occurs
+                   
                     if(response.status === 404) {
                          throw new Error('Trip not found.');
                     }
@@ -58,39 +55,39 @@ export default function TripItineraryPage() {
         if (tripId) {
             fetchTripDetails();
         }
-    }, [tripId]); // This effect re-runs whenever the tripId in the URL changes
+    }, [tripId]); 
 
-    // --- Render loading state ---
+  
     if (loading) {
         return <div className="flex justify-center items-center min-h-screen"><p>Loading Itinerary...</p></div>;
     }
 
-    // --- Render error state ---
+  
     if (error) {
         return <div className="flex justify-center items-center min-h-screen text-red-500"><p>Error: {error}</p></div>;
     }
 
-    // --- Render "not found" state ---
+   
     if (!trip) {
         return <div className="flex justify-center items-center min-h-screen"><p>Could not find trip data.</p></div>;
     }
 
-    // --- Main component render ---
+   
     return (
         <div className="bg-gray-50 min-h-screen p-4 sm:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto">
-                {/* Back Link to the main trip list */}
+               
                 <Link to="/" className="inline-flex items-center gap-2 text-blue-600 hover:underline mb-6">
                     <ArrowLeft size={16} />
                     Back to All Trips
                 </Link>
 
-                {/* --- Trip Header --- */}
+             
                 <header className="mb-8">
                     <img 
                         src={trip.coverPhoto} 
                         alt={trip.name} 
-                        className="w-full h-64 object-cover rounded-lg mb-4 shadow-lg"
+                        className="w-screen h-64 object-cover rounded-lg mb-4 shadow-lg"
                         onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/1200x400/EEE/31343C?text=Image+Not+Available'; }}
                     />
                     <h1 className="text-4xl font-extrabold text-gray-900">{trip.name}</h1>
@@ -102,7 +99,7 @@ export default function TripItineraryPage() {
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* --- Itinerary Section (Left/Main Column) --- */}
+                    
                     <div className="lg:col-span-2 space-y-6">
                         <h2 className="text-3xl font-bold">Itinerary Plan</h2>
                         {trip.stops.map(stop => (
