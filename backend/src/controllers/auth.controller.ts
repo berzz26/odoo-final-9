@@ -60,7 +60,7 @@ export const login = async (req: Request, res: Response) => {
         }
 
         const token = jwt.sign(
-            { userId: user.id, role: "USER" },
+            { userId: user.id, role: "USER", },
             jwtSecret,
             { expiresIn: "7d" }
         );
@@ -84,7 +84,18 @@ export const getUserDetails = async (req: Request, res: Response): Promise<void>
         return;
     }
     try {
-        const user = await prisma.user.findUniqueOrThrow({ where: { id } });
+        const user = await prisma.user.findUniqueOrThrow({
+            where: { id },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                country: true,
+                city: true,
+
+                // Add any other fields you want to include
+            }
+        });
         res.status(200).json(user);
 
     } catch (error) {

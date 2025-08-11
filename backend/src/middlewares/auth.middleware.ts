@@ -19,7 +19,7 @@ export const authenticate = async (
   next: NextFunction,
 ) => {
   const token = req.headers.authorization?.split(" ")[1];
-  console.log(req.headers.authorization);
+  
 
   if (!token) {
     return res
