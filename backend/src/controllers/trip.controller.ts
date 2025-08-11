@@ -1,6 +1,6 @@
 // trip.controller.ts
 // ...controller logic for trips...
-import type{ Request, Response } from "express";
+import type { Request, Response } from "express";
 import * as tripService from '../services/trip.service.js';
 
 /**
@@ -8,7 +8,11 @@ import * as tripService from '../services/trip.service.js';
  */
 export const getAllTrips = async (req: Request, res: Response) => {
   try {
-    const trips = await tripService.getAllTrips();
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ success: "false", message: "User not found" });
+    }
+    const trips = await tripService.getAllTrips(userId);
     res.status(200).json(trips);
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve trips' });
@@ -32,7 +36,11 @@ export const createTrip = async (req: Request, res: Response) => {
  */
 export const getTripById = async (req: Request, res: Response) => {
   try {
-    const trip = await tripService.getTripById(req.params.id);
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ success: "false", message: "user not found" })
+    }
+    const trip = await tripService.getTripById(userId);
     if (!trip) {
       return res.status(404).json({ error: 'Trip not found' });
     }

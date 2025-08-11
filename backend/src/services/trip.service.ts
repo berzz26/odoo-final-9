@@ -6,8 +6,16 @@ const prisma = new PrismaClient();
  * Get all trips from the database.
  * @returns An array of all trips.
  */
-export const getAllTrips = async () => {
-  return prisma.trip.findMany();
+export const getAllTrips = async (userId: string) => {
+  return prisma.trip.findMany({
+    where: { userId: userId },
+    include: {
+      stops: {
+        include: { activities: true },
+      },
+      budget: true,
+    },
+  });
 };
 
 /**

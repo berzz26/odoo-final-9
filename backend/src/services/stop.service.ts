@@ -29,3 +29,12 @@ export const deleteStop = async (id: string) => {
         where: { id: id },
     });
 };
+
+export const getStopById = async (id: string) => {
+    return prisma.stop.findUnique({
+        where: { id: id },
+        include: {
+            activities: true, // Include the related activities
+        },
+    });
+};
