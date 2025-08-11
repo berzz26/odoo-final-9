@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import NewTrip from "./pages/NewTrip";
 import Signup from "./pages/Signup";
+import ItenarySection from "./pages/ItenarySection";
 
 
 function Shell() {
@@ -11,7 +12,7 @@ function Shell() {
   return (
     <div className="min-h-dvh bg-background text-foreground">
       <Navbar />
-      <main className={full ? "w-full" : "mx-auto w-full max-w-5xl px-4 py-6"}>
+      <main className={full ? "w-full" : " w-full max-w-5xl px-4 py-6"}>
         <Outlet />
       </main>
     </div>
@@ -25,6 +26,7 @@ export default function App() {
       <Route element={<Shell />}>
         <Route index element={<Dashboard />} />
         <Route path="/newtrip" element={<NewTrip />} />
+        <Route path="/itenary-section" element={<ItenarySection/>}/>
         <Route path="/signup" element={<Signup/>}/>
         <Route path="*" element={<div>Not found</div>} />
       </Route>
