@@ -50,7 +50,7 @@ const Dashboard = () => {
 
       if (token) {
         try {
-          const response = await fetch('http://localhost:3000/api/auth/me', {
+          const response = await fetch('http://192.168.103.71:3000/api/auth/me', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const Dashboard = () => {
 
           if (response.ok) {
             setIsAuth(true);
-            const tripsResponse = await fetch('http://localhost:3000/api/trips', {
+            const tripsResponse = await fetch('http://192.168.103.71:3000/api/trips', {
               headers: {
                 'Authorization': `Bearer ${token}`
               }
