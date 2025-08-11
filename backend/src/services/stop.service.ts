@@ -4,7 +4,13 @@ const prisma = new PrismaClient();
 
 export const createStop = async (stopData: any) => {
     return prisma.stop.create({
-        data: stopData,
+        data: {
+            city: stopData.city,
+            country: stopData.country ?? null,
+            startDate: new Date(stopData.startDate),
+            endDate: new Date(stopData.endDate),
+            tripId: stopData.tripId
+        }
     });
 };
 
@@ -38,3 +44,9 @@ export const getStopById = async (id: string) => {
         },
     });
 };
+
+export const getAllStops = async () => {
+    return prisma.stop.findMany({
+        include: { activities: true }
+    });
+}

@@ -80,3 +80,15 @@ export const deleteTrip = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to delete trip' });
   }
 };
+
+export const getSpecificTrip = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    
+    const trip = await tripService.getSpecificTrip(id);
+    res.status(200).json(trip);
+  } catch (error: any) {
+    res.status(404).json({ message: error.message || "Trip not found" });
+  }
+};

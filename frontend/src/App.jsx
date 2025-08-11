@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import ItenarySection from "./pages/ItenarySection";
 import TripItenary from "./pages/TripItenary";
 import Triplisting from "./pages/Triplisting";
-
+import Profile from "./pages/Profile";
 
 
 function Shell() {
@@ -34,9 +34,9 @@ export default function App() {
         <Route path="/itenary-section" element={<ItenarySection/>}/>
           <Route path="/trips/:tripId" element={<TripItenary />} />
         <Route path="/signup" element={<Signup/>}/>
-
+        <Route path="user-info" element={<Profile/>}/>
         <Route path="/triplisting" element={<Triplisting />} />
-        {/* <Route path="/tripcard" element={<tripCard />} /> */}
+        {/* <Route path="/tripscard" element={<tripCard />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<div>Not found</div>} />
       </Route>
