@@ -36,7 +36,6 @@ export default function Navbar() {
           GlobalTrotter
         </Link>
 
-        {/* Right */}
         <div className="ml-auto flex items-center gap-6">
           <Link to="/newtrip" className={linkCls}>
             My Trips
