@@ -66,12 +66,40 @@ export const updateTrip = async (id: string, tripData: any) => {
  * @param id The ID of the trip to delete.
  */
 export const deleteTrip = async (id: string) => {
-  // Prisma can delete related records if you've set up `onDelete: Cascade` in your schema.
-  // This is a powerful feature to ensure data integrity.
-  return prisma.trip.delete({
-    where: { id: id },
-  });
+  try {
+    // Delete activities of all stops under the trip
+    await prisma.activity.deleteMany({
+      where: {
+        stop: {
+          tripId: id,
+        },
+      },
+    });
+
+    // Delete stops related to the trip
+    await prisma.stop.deleteMany({
+      where: { tripId: id },
+    });
+
+    // Delete budget related to the trip
+    await prisma.budget.deleteMany({
+      where: { tripId: id },
+    });
+
+    // Then delete the trip itself
+    const deletedTrip = await prisma.trip.delete({
+      where: { id },
+    });
+
+    return deletedTrip;
+  } catch (error: any) {
+    if (error.code === 'P2025') {
+      throw new Error(`Trip with id "${id}" does not exist.`);
+    }
+    throw new Error(`Failed to delete trip: ${error.message}`);
+  }
 };
+
 
 export const getSpecificTrip = async (id: string) => {
   try {
