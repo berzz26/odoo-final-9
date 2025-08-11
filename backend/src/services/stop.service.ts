@@ -38,3 +38,10 @@ export const getStopById = async (id: string) => {
         },
     });
 };
+export const getAllStops = async () => {
+    return prisma.stop.findMany({
+        include: {
+            activities: true, // Include related activities
+        },
+    });
+};

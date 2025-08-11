@@ -5,7 +5,8 @@ import {
     getStopsByTripId,
     getStopById,
     updateStop,
-    deleteStop
+    deleteStop,
+    getAllStops
 } from "../controllers/stop.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/zod.middleware.js";
@@ -20,4 +21,5 @@ router.get("/:tripId/stops/:id", authenticate, getStopById); // Getting a single
 router.put("/:tripId/stops/:id", authenticate, validate(stopSchema), updateStop);
 router.delete("/:tripId/stops/:id", authenticate, deleteStop);
 
+router.get('/getAllStops', authenticate, getAllStops)
 export default router;
