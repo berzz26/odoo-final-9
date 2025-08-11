@@ -3,7 +3,6 @@ import type { Request, Response } from "express";
 import prisma from "../config/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import type { User } from "@prisma/client";
 
 const jwtSecret = process.env.JWT_SECRET!;
 
