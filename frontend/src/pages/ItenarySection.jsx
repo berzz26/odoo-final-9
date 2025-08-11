@@ -20,7 +20,7 @@ export default function ItenarySection() {
 
 
     return (
-        <div className='flex  min-h-screen w-screen bg-gray-50 p-6'>
+        <div className='flex  min-h-screen w-screen bg-gray-50 p-6 !bg-#FCEFCB'>
             <div>
                 <div className='text-4xl font-bold'>Let's create an itinary</div>
                 <div className='italic'>You have the following planned trips.</div>
