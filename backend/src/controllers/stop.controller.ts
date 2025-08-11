@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import * as stopService from '../services/stop.service.js';
 
+
+
 /**
  * Creates a new stop for a specific trip.
  */
@@ -73,4 +75,12 @@ export const getStopById = async (req: Request, res: Response) => {
   }
 };
 
-// ... (other controller functions)
+
+export const getAllStops = async (req: Request, res: Response) => {
+  try {
+    const stops = await stopService.getAllStops();
+    res.status(201).json(stops);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch stop' });
+  }
+};

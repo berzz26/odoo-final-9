@@ -44,14 +44,7 @@ export const createTrip = async (tripData: any, userId: string) => {
 export const getTripById = async (id: string) => {
   return prisma.trip.findUnique({
     where: { id: id },
-    include: {
-      stops: {
-        include: {
-          activities: true // Include activities for each stop
-        }
-      },
-      budget: true // Include the related budget
-    }
+
   });
 };
 
@@ -78,4 +71,28 @@ export const deleteTrip = async (id: string) => {
   return prisma.trip.delete({
     where: { id: id },
   });
+};
+
+export const getSpecificTrip = async (id: string) => {
+  try {
+
+
+    return await prisma.trip.findUnique({
+      where: { id },
+      include: {
+        stops: {
+          include: {
+            activities: true // Include activities for each stop
+          }
+        },
+        budget: true // Include the related budget
+      }
+    });
+  } catch (error: any) {
+    if (error.code === "P2025") {
+      // Prisma's "Record not found" error
+      throw new Error(`Trip with ID "${id}" not found`);
+    }
+    throw new Error(error.message || "Failed to fetch trip");
+  }
 };
