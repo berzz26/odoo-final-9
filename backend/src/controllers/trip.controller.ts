@@ -24,12 +24,19 @@ export const getAllTrips = async (req: Request, res: Response) => {
  */
 export const createTrip = async (req: Request, res: Response) => {
   try {
-    const newTrip = await tripService.createTrip(req.body);
+    if (!req.user?.userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const newTrip = await tripService.createTrip(req.body, req.user.userId);
     res.status(201).json(newTrip);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create trip' });
+    console.error(error);
+    res.status(500).json({ error: "Failed to create trip" });
   }
 };
+
+
 
 /**
  * Get a trip by its ID, including all related stops, activities, and budget.
