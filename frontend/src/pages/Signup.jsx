@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
 
 const Signup = () => {
   const navigate = useNavigate();
+
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    phone: '',
-    city: '',
     country: '',
-    additionalInfo: '',
   });
-  
- 
+
+
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -34,24 +35,41 @@ const Signup = () => {
   };
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const submissionData = {
-      name: `${formData.name}`,
-      email: formData.email,
-      password: formData.password,
+    setLoading(true);
+    setError(null);
 
+    try {
+      const response = await fetch('https://odoo-final-9.onrender.com/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          name: formData.name, 
+          email: formData.email, 
+          password: formData.password, 
+          country: formData.country
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+
+        throw new Error(result.message || 'Registration failed. Please try again.');
+      }
+
+      console.log('Registration successful.');
   
-    };
-    console.log("Submitting registration data:", submissionData);
-    console.log("Avatar file to upload:", avatarFile);
-    
-    //will send data to backend 
-    
-    
-    navigate('/login');
-    alert("Registration submitted! Check the console for data.");
+      alert('Registration successful! Please log in.');
+      navigate('/login');
+
+    } catch (err)      {
+      console.error('Registration error:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -83,12 +101,11 @@ const Signup = () => {
             <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" />
             <div className="grid grid-cols-2 gap-4">
               <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" />
-              <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" />
+              <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
             </div>
           </div>
           
-          {/* Additional Information Textarea */}
-          <textarea name="additionalInfo" placeholder="Additional Information ...." value={formData.additionalInfo} onChange={handleChange} rows="4" className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]"></textarea>
+          
 
           {/* Submit Button */}
           <div className="text-center pt-4">
