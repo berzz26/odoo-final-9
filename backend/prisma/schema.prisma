@@ -28,6 +28,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   avatarUrl String?
+  Rating    Rating[]
 }
 
 model Trip {
@@ -40,10 +41,26 @@ model Trip {
   coverPhoto  String?
   stops       Stop[]
   budget      Budget?
+  isPublic    Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  rating      Rating[]
 
   user User @relation(fields: [userId], references: [id])
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  tripId    String
+  userId    String
+  score     Int // e.g. 1-5 stars
+  comment   String? // optional feedback
+  createdAt DateTime @default(now())
+
+  trip Trip @relation(fields: [tripId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([tripId, userId]) // one rating per user per trip
 }
 
 model Stop {
