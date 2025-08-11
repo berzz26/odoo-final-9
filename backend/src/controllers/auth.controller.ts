@@ -3,7 +3,6 @@ import type { Request, Response } from "express";
 import prisma from "../config/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import type { User } from "@prisma/client";
 
 const jwtSecret = process.env.JWT_SECRET!;
 
@@ -31,12 +30,17 @@ export const signup = async (req: Request, res: Response) => {
             }
         });
 
+        const token = jwt.sign(
+            { userId: user.id, email: user.email, name: user.name, avatarUrl: user.avatarUrl },
+            jwtSecret,
+            { expiresIn: "7d" }
+        );
 
 
         res.status(201).json({
             message: "Signup successful",
 
-            user: { id: user.id, name: user.name, email: user.email }
+            user: { id: user.id, name: user.name, email: user.email, token }
         });
     } catch (err) {
         console.error("Signup error:", err);

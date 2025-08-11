@@ -4,15 +4,12 @@ import { useNavigate, Link } from 'react-router-dom';
 const Signup = () => {
   const navigate = useNavigate();
 
-  // State for all form fields, ensuring all inputs are controlled
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    phone: '',
-    city: '',
     country: '',
-    additionalInfo: '',
+    
   });
 
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -39,7 +36,8 @@ const Signup = () => {
     setError(null);
 
     try {
-      const signupResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/signup`, {
+      // Step 1: Signup request
+      const signupResponse = await fetch(`http://192.168.103.71:3000/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -47,59 +45,39 @@ const Signup = () => {
           email: formData.email,
           password: formData.password,
           country: formData.country,
-          phone: formData.phone,
-          city: formData.city,
-        }), 
+       
+        }),
       });
 
       const signupResult = await signupResponse.json();
+      console.log(signupResult);
 
-      if (!signupResponse.ok) {
-        throw new Error(signupResult.message || 'User registration failed.');
-      }
+      if (!signupResponse.ok) throw new Error(signupResult.message || 'User registration failed.');
 
-      const { token } = signupResult;
-      
-      // --- Step 2: If registration is successful and there's an avatar, upload it ---
-      if (token && avatarFile) {
-        console.log('User created, now uploading avatar...');
+      const { token } = signupResult.user;
+      if (!token) throw new Error('No token returned from signup.');
+
+      // Step 2: Avatar upload (if selected)
+      if (avatarFile) {
         const avatarFormData = new FormData();
         avatarFormData.append('avatar', avatarFile);
 
-        // FIXED: Replaced the hardcoded local IP with the environment variable
-        // This ensures the avatar is sent to the same server as the signup request.
-        const avatarResponse = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/upload/avatar`,
-          {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-            body: avatarFormData,
-          }
-        );
+        const avatarResponse = await fetch(`http://192.168.103.71:3000/api/upload/avatar`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: avatarFormData,
+        });
 
-        if (!avatarResponse.ok) {
-          const avatarErrorResult = await avatarResponse.json();
-          throw new Error(avatarErrorResult.message || 'Avatar upload failed.');
-        }
-        console.log('Avatar uploaded successfully.');
-      }
-      
-      // Store token and navigate after all steps are complete
-      if (token) {
-        const now = new Date();
-        const expirationTime = now.getTime() + 7 * 24 * 60 * 60 * 1000; 
-        const item = {
-          token: token,
-          expires: expirationTime,
-        };
-        localStorage.setItem('authToken', JSON.stringify(item));
-        console.log('Process complete, token stored.');
+        const avatarResult = await avatarResponse.json();
+        if (!avatarResponse.ok) throw new Error(avatarResult.message || 'Avatar upload failed.');
       }
 
-      alert('Registration successful! Please log in.');
-      navigate('/login');
+      // Step 3: Store token and redirect
+      const expirationTime = Date.now() + 7 * 24 * 60 * 60 * 1000;
+      localStorage.setItem('authToken', JSON.stringify({ token, expires: expirationTime }));
+
+      alert('Registration successful!');
+      navigate('/');
 
     } catch (err) {
       console.error('Registration process error:', err);
@@ -109,13 +87,14 @@ const Signup = () => {
     }
   };
 
+
   return (
     <div className="bg-[#1E212B] min-h-screen w-screen text-[#EAECEE] font-sans flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
         <h1 className="text-3xl font-bold text-center mb-6">Registration Screen</h1>
-        
+
         <form onSubmit={handleSubmit} className="bg-[#2D3039] border-2 border-[#4A4E5A] rounded-lg p-8 space-y-6">
-          
+
           {/* Avatar Upload Section */}
           <div className="flex justify-center">
             <label htmlFor="avatar-upload" className="cursor-pointer">
@@ -139,16 +118,16 @@ const Signup = () => {
             <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" />
             <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
           </div>
-          
-         
+
+
 
           {/* Error Message Display */}
           {error && <p className="text-red-500 text-center">{error}</p>}
 
           {/* Submit Button */}
           <div className="text-center pt-4">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="bg-[#8338EC] text-white rounded-full px-10 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 font-semibold disabled:bg-gray-500 disabled:cursor-not-allowed"
               disabled={loading}
             >

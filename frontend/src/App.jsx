@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import NewTrip from "./pages/NewTrip";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Login from "./pages/Login";
 import ItenarySection from "./pages/ItenarySection";
 import TripItenary from "./pages/TripItenary";
 
