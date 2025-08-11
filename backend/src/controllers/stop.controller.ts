@@ -1,4 +1,4 @@
-import type{ Request, Response } from "express";
+import type { Request, Response } from "express";
 import * as stopService from '../services/stop.service.js';
 
 /**
@@ -54,3 +54,23 @@ export const deleteStop = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to delete stop' });
   }
 };
+// controllers/stop.controller.ts
+// ... (existing imports)
+
+/**
+ * Gets a single stop by its ID.
+ */
+export const getStopById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const stop = await stopService.getStopById(id);
+    if (!stop) {
+      return res.status(404).json({ error: 'Stop not found' });
+    }
+    res.status(200).json(stop);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve stop' });
+  }
+};
+
+// ... (other controller functions)
