@@ -1,9 +1,13 @@
+// routes/auth.routes.ts
 import { Router } from "express";
+import { signup, login } from "../controllers/auth.controller.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
+import { signupSchema, loginSchema } from "../schemas/auth.schema.js";
+import { validate } from "../middlewares/zod.middleware.js";
+
 const router = Router();
 
-// Auth routes
-router.post("/signup" /* controller.signup */);
-router.post("/login" /* controller.login */);
-router.post("/logout" /* controller.logout */);
+router.post("/signup", validate(signupSchema), signup);
+router.post("/login", validate(loginSchema), login);
 
 export default router;

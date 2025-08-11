@@ -2,11 +2,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Debug: Check if environment variables are loaded
-console.log('Environment Variables:', {
-  JWT_SECRET: process.env.JWT_SECRET,
-  SUPABASE_URL: process.env.SUPABASE_URL,
-  PORT: process.env.PORT
-});
+// console.log('Environment Variables:', {
+//   JWT_SECRET: process.env.JWT_SECRET,
+//   SUPABASE_URL: process.env.SUPABASE_URL,
+//   PORT: process.env.PORT
+// });
 
 import express from "express";
 import cors from "cors";
@@ -38,6 +38,8 @@ app.get("/", (req: Request, res: Response) => {
 
 //mount the routes
 app.use("/api", routes);
+
+
 const PORT = process.env.PORT;
 if (!PORT) {
   throw new Error("Port in env not defined");
