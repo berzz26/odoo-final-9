@@ -31,12 +31,17 @@ export const signup = async (req: Request, res: Response) => {
             }
         });
 
+        const token = jwt.sign(
+            { userId: user.id, email: user.email, name: user.name, avatarUrl: user.avatarUrl },
+            jwtSecret,
+            { expiresIn: "7d" }
+        );
 
 
         res.status(201).json({
             message: "Signup successful",
 
-            user: { id: user.id, name: user.name, email: user.email }
+            user: { id: user.id, name: user.name, email: user.email, token }
         });
     } catch (err) {
         console.error("Signup error:", err);
