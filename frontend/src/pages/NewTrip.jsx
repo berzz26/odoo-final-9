@@ -118,10 +118,23 @@ export default function NewTrip() {
         body: JSON.stringify(tripPayload),
       });
 
+<<<<<<< HEAD
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to create trip.");
       }
+=======
+    const handleCreateTrip = () => {
+        console.log("Creating new trip:", {
+            name: tripName,
+            country,
+            stops,
+            startDate: start,
+            endDate: end,
+            coverPhoto: "",
+        });
+    };
+>>>>>>> 31b7b8d6a032ba8f4f8d5ffbefc245f20da04771
 
       const newTrip = await response.json();
       console.log("Trip created successfully:", newTrip);

@@ -4,9 +4,9 @@ import Dashboard from "./pages/Dashboard";
 import NewTrip from "./pages/NewTrip";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Login from "./pages/Login";
 import ItenarySection from "./pages/ItenarySection";
 import TripItenary from "./pages/TripItenary";
-
 
 
 function Shell() {
@@ -32,8 +32,8 @@ export default function App() {
         <Route path="/newtrip" element={<NewTrip />} />
         <Route path="/itenary-section" element={<ItenarySection/>}/>
           <Route path="/trips/:tripId" element={<TripItenary />} />
-           <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup/>}/>
+        <Route path="/login" element={<Login />} />
         <Route path="*" element={<div>Not found</div>} />
       </Route>
     </Routes>
