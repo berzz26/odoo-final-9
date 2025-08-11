@@ -5,6 +5,7 @@ import stopRoutes from "./stop.routes.js";
 import activityRoutes from "./activity.routes.js";
 import budgetRoutes from "./budget.routes.js";
 import uploadRoutes from "./upload.routes.js";
+import communityRoutes from "./community.routes.js"
 
 const router = Router();
 
@@ -23,5 +24,7 @@ router.use("/budget", budgetRoutes);
 
 // Routes for file uploads (e.g., /upload/avatar)
 router.use("/upload", uploadRoutes);
+
+router.use("/community", communityRoutes)
 
 export default router;
