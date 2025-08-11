@@ -6,7 +6,7 @@ import activityRoutes from "./activity.routes.js";
 import budgetRoutes from "./budget.routes.js";
 import uploadRoutes from "./upload.routes.js";
 import communityRoutes from "./community.routes.js"
-
+import chatRoutes from "./chat.route.js"
 const router = Router();
 
 // Routes for user authentication (e.g., /auth/login, /auth/signup)
@@ -27,4 +27,6 @@ router.use("/upload", uploadRoutes);
 
 router.use("/community", communityRoutes)
 
+
+router.use("/chat", chatRoutes)
 export default router;
