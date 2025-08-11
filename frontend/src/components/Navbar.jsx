@@ -99,7 +99,7 @@ export default function Navbar() {
           {/* Avatar if logged in, or sign up/login links if not */}
           {!isLoading && isLoggedIn ? (
             <Link
-              to="/account"
+              to="/user-info"
               aria-label="Account"
               className="rounded-full p-1 hover:bg-gray-500/10 transition-colors"
             >
