@@ -109,3 +109,36 @@ export const getUserDetails = async (req: Request, res: Response): Promise<void>
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
+    const id = req.user?.userId;
+    if (!id) {
+        res.status(401).json({ success: false, message: "Unauthorized" });
+        return;
+    }
+
+    // Sanitize the request body to prevent unauthorized updates to fields like 'role' or 'password'
+    const { name, country, city, phone, avatarUrl } = req.body;
+    const updateData = { name, country, city, phone, avatarUrl };
+
+    try {
+        const updatedUser = await prisma.user.update({
+            where: { id },
+            data: updateData,
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                country: true,
+                city: true,
+                phone: true,
+                avatarUrl: true,
+                role: true
+            }
+        });
+        res.status(200).json(updatedUser);
+    } catch (err) {
+        console.error("Update user error:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
