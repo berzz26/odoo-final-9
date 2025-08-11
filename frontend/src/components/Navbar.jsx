@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -9,79 +9,105 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 
-const TOKEN_KEY = "authToken";
-function useAuthToken() {
+// Custom hook for authentication state
+function useAuthStatus() {
+  const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
+
   useEffect(() => {
-    const check = () => setIsLoggedIn(localStorage.getItem(TOKEN_KEY.token));
-    console.log(TOKEN_KEY.token);
-    check();
-    window.addEventListener("storage", check);
-    window.addEventListener("focus", check);
-    return () => {
-      window.removeEventListener("storage", check);
-      window.removeEventListener("focus", check);
-    };
-  }, []);
-  return isLoggedIn;
+    async function fetchUserData() {
+      setIsLoading(true);
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        setIsLoggedIn(false);
+        setUser(null);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch("http://192.168.103.71:3000/api/auth/me", {
+          method: "GET",
+          headers: { "Authorization": `Bearer ${authToken}` },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data with provided token.");
+        }
+
+        const userData = await response.json();
+        setUser(userData);
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error("User data fetch failed:", error);
+        localStorage.removeItem("authToken");
+        setIsLoggedIn(false);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchUserData();
+  }, [location]);
+
+  return { user, isLoggedIn, isLoading };
 }
 
 export default function Navbar() {
-  const isLoggedIn = useAuthToken();
-
-  const linkCls =
-    "text-xl font-medium px-2 py-1 rounded-md transition-colors hover:bg-gray-500/10";
+  const { user, isLoggedIn, isLoading } = useAuthStatus();
+  const linkCls = "text-xl font-medium px-2 py-1 rounded-md transition-colors hover:bg-gray-500/10";
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
       <nav className="mx-auto w-full max-w-5xl px-2 py-3 flex items-center">
-        {/* Brand */}
         <Link
           to="/"
           className="text-xl font-semibold px-2 py-1 rounded-md transition-colors hover:bg-gray-500/10"
         >
           GlobalTrotter
         </Link>
-
-        {/* Right */}
         <div className="ml-auto flex items-center gap-6">
-          {/* My Trips dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-  className={`${linkCls} flex items-center gap-1
-              !bg-white !text-[#646CFF] !text-xl  hover:bg-gray-100
-             
-              dark:bg-white dark:text-gray-900`}
->
-                My Trips
-                <ChevronDown className="h-4 w-4" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem asChild>
-                <Link to="/itenary-section">Planned trips</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/newtrip">Create new trip</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* My Trips dropdown - only when logged in */}
+          {!isLoading && isLoggedIn && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className={`${linkCls} flex items-center gap-1 !bg-white !text-[#646CFF] !text-xl hover:bg-gray-100 dark:bg-white dark:text-gray-900`}
+                >
+                  My Trips
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem asChild>
+                  <Link to="/itenary-section">Planned trips</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/newtrip">Create new trip</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/triplisting">List My Trips</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
-          {/* Explore (plain link) */}
-          {/* <Link to="/explore" className={linkCls}>
-            Explore
-          </Link> */}
-
-          {isLoggedIn ? (
+          {/* Avatar if logged in, or sign up/login links if not */}
+          {!isLoading && isLoggedIn ? (
             <Link
               to="/account"
               aria-label="Account"
               className="rounded-full p-1 hover:bg-gray-500/10 transition-colors"
             >
               <Avatar className="h-8 w-8">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>U</AvatarFallback>
+                <AvatarImage src={user?.avatarUrl} />
+                <AvatarFallback>
+                  {user?.email?.[0]?.toUpperCase() || "U"}
+                </AvatarFallback>
               </Avatar>
             </Link>
           ) : (
