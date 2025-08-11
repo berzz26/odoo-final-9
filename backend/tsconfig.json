@@ -23,7 +23,9 @@
 
     // Other options
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+
+    "typeRoots": ["./node_modules/@types", "types"]
   },
-  "include": ["src/**/*.ts", "src/**/*.js"]
+  "include": ["src/**/*.ts", "src/**/*.js", "types/**/*.d.ts"]
 }

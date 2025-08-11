@@ -18,11 +18,15 @@ model User {
   id        String   @id @default(uuid())
   name      String
   email     String   @unique
+  phone     String?
+  city      String?
+  country   String
   password  String
   role      Role     @default(USER)
   trips     Trip[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  avatarUrl String?
 }
 
 model Trip {
