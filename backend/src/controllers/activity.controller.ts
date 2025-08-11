@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import * as activityService from '../services/activity.service';
+import type { Request, Response } from "express";
+import * as activityService from '../services/activity.service.js';
 
 /**
  * Creates a new activity for a specific stop.
@@ -8,6 +8,7 @@ export const createActivity = async (req: Request, res: Response) => {
   try {
     const newActivity = await activityService.createActivity(req.body);
     res.status(201).json(newActivity);
+    
   } catch (error) {
     res.status(500).json({ error: 'Failed to create activity' });
   }
