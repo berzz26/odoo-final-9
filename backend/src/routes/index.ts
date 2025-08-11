@@ -19,7 +19,7 @@ router.use("/trips", tripRoutes);
 // These routes are nested under trips and will use the tripId as a parameter.
 router.use("/stop", stopRoutes);
 router.use("/activity", activityRoutes);
-router.use("/trips", budgetRoutes);
+router.use("/budget", budgetRoutes);
 
 // Routes for file uploads (e.g., /upload/avatar)
 router.use("/upload", uploadRoutes);
