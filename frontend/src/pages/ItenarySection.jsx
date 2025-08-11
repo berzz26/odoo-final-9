@@ -21,9 +21,7 @@ export default function ItenarySection() {
                     throw new Error('Authorization token not found. Please log in.');
                 }
 
-                // Fetch data from the backend endpoint.
-                // Using an environment variable is best practice, but you can replace it
-                // with your local IP: 'http://192.168.103.71:3000/api/trips'
+               
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -46,7 +44,7 @@ export default function ItenarySection() {
         };
 
         fetchTrips();
-    }, []); // Empty dependency array ensures this runs only once on mount
+    }, []); 
 
     return (
         <div className='flex min-h-screen w-screen bg-gray-50 p-6'>
