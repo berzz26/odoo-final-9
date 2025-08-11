@@ -1,6 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom'
 import NewTrip from "./pages/NewTrip"
-
+import Dashboard from "./pages/Dashboard"
 export default function App() {
   return (
     <>
@@ -9,7 +9,7 @@ export default function App() {
       </nav>
 
       <Routes>
-  <Route path="/" element={<div style={{padding:16}}>Home</div>} />
+   <Route path="/dashboard" element={<Dashboard />} />
   <Route path="/newtrip" element={<NewTrip />} />
         <Route path="*" element={<div style={{padding:16}}>Not found</div>} />
       </Routes>
