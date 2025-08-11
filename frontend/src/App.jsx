@@ -7,7 +7,8 @@ export default function App() {
       <nav style={{ display: 'flex', gap: 12, margin: '12px 0' }}>
   <Link to="/newtrip">New Trip</Link>
       </nav>
-
+      
+ 
       <Routes>
    <Route path="/dashboard" element={<Dashboard />} />
   <Route path="/newtrip" element={<NewTrip />} />
