@@ -312,7 +312,6 @@
 //   );
 // }
 
-
 import React, { useState, useMemo } from 'react';
 // Removed useNavigate as it's not used in this self-contained component.
 import {
@@ -346,6 +345,14 @@ const initialActivityState = {
     duration: "",
 };
 
+const initialBudgetState = {
+    transportCost: 0,
+    stayCost: 0,
+    activitiesCost: 0,
+    mealsCost: 0,
+    totalCost: 0,
+};
+
 const initialState = {
   name: "",
   description: "",
@@ -357,6 +364,7 @@ const initialState = {
   city: "",
   activities: [], // Will now hold full activity objects
   currentActivity: initialActivityState,
+  budget: initialBudgetState,
 };
 
 
@@ -365,7 +373,7 @@ function NewTrip() {
   const today = useMemo(() => new Date().toISOString().split("T")[0], []);
 
   // State to manage which step of the form is currently active.
-  const [currentStep, setCurrentStep] = useState('create'); // 'create', 'addStops', 'addActivities', 'completed'
+  const [currentStep, setCurrentStep] = useState('create'); // 'create', 'addStops', 'addActivities', 'addBudget', 'completed'
   const [tripId, setTripId] = useState(null); // To store the ID of the trip once created.
   const [createdStopIds, setCreatedStopIds] = useState([]); // To store IDs of created stops.
 
@@ -374,6 +382,23 @@ function NewTrip() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  // Automatically calculate total activities cost and total budget.
+  useMemo(() => {
+      const activitiesCost = tripData.activities.reduce((total, activity) => total + (parseFloat(activity.cost) || 0), 0);
+      const { transportCost, stayCost, mealsCost } = tripData.budget;
+      const totalCost = (parseFloat(transportCost) || 0) + (parseFloat(stayCost) || 0) + activitiesCost + (parseFloat(mealsCost) || 0);
+
+      setTripData(prev => ({
+          ...prev,
+          budget: {
+              ...prev.budget,
+              activitiesCost,
+              totalCost,
+          }
+      }));
+  }, [tripData.activities, tripData.budget.transportCost, tripData.budget.stayCost, tripData.budget.mealsCost]);
+
 
   // --- HANDLERS FOR INPUT CHANGES ---
 
@@ -388,6 +413,17 @@ function NewTrip() {
           ...prev,
           currentActivity: {
               ...prev.currentActivity,
+              [id]: value,
+          }
+      }));
+  };
+  
+  const handleBudgetInputChange = (e) => {
+      const { id, value } = e.target;
+      setTripData(prev => ({
+          ...prev,
+          budget: {
+              ...prev.budget,
               [id]: value,
           }
       }));
@@ -510,32 +546,66 @@ function NewTrip() {
       const firstStopId = createdStopIds[0]; // Associate all activities with the first stop.
 
       try {
-          const activityCreationPromises = tripData.activities.map(activity => {
-              const { id, ...activityData } = activity; // Exclude temp id from payload
-              const activityPayload = {
-                  ...activityData,
-                  cost: activityData.cost ? parseFloat(activityData.cost) : undefined,
-                  duration: activityData.duration ? parseInt(activityData.duration, 10) : undefined,
-                  stopId: firstStopId,
-                  tripId: tripId, 
-              };
-              return fetch(`http://192.168.103.71:3000/api/activity/${tripId}/stops/${firstStopId}/activities`, {
-                  method: 'POST',
-                  headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-                  body: JSON.stringify(activityPayload)
-              }).then(async res => {
-                  if (!res.ok) {
-                      const errorData = await res.json();
-                      console.error("Error creating activity:", errorData);
-                      throw new Error(`Failed to create activity: ${activity.name}`);
-                  }
-                  return res.json();
+          if (tripData.activities.length > 0) {
+              const activityCreationPromises = tripData.activities.map(activity => {
+                  const { id, ...activityData } = activity; // Exclude temp id from payload
+                  const activityPayload = {
+                      ...activityData,
+                      cost: activityData.cost ? parseFloat(activityData.cost) : undefined,
+                      duration: activityData.duration ? parseInt(activityData.duration, 10) : undefined,
+                      stopId: firstStopId,
+                      tripId: tripId, 
+                  };
+                  return fetch(`http://192.168.103.71:3000/api/activity/${tripId}/stops/${firstStopId}/activities`, {
+                      method: 'POST',
+                      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                      body: JSON.stringify(activityPayload)
+                  }).then(async res => {
+                      if (!res.ok) {
+                          const errorData = await res.json();
+                          console.error("Error creating activity:", errorData);
+                          throw new Error(`Failed to create activity: ${activity.name}`);
+                      }
+                      return res.json();
+                  });
               });
+              await Promise.all(activityCreationPromises);
+          }
+          setCurrentStep('addBudget'); // Move to budget step regardless of whether activities were added
+
+      } catch (err) {
+          setError(err.message);
+      } finally {
+          setLoading(false);
+      }
+  };
+  
+  // Step 4: Save the budget for the trip.
+  const handleSaveBudget = async () => {
+      setLoading(true);
+      setError(null);
+      const token = localStorage.getItem("authToken");
+      if (!token || !tripId) return;
+      
+      const { activitiesCost, ...budgetData } = tripData.budget;
+
+      const budgetPayload = {
+          tripId: tripId,
+          transportCost: parseFloat(budgetData.transportCost) || 0,
+          stayCost: parseFloat(budgetData.stayCost) || 0,
+          activitiesCost: parseFloat(activitiesCost) || 0,
+          mealsCost: parseFloat(budgetData.mealsCost) || 0,
+          totalCost: parseFloat(budgetData.totalCost) || 0,
+      };
+
+      try {
+          const response = await fetch(`http://192.168.103.71:3000/api/budget/${tripId}/addBudget`, {
+              method: 'POST',
+              headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+              body: JSON.stringify(budgetPayload)
           });
-
-          await Promise.all(activityCreationPromises);
-          setCurrentStep('completed'); // All done, move to completion view.
-
+          if (!response.ok) throw new Error((await response.json()).message || "Failed to save budget.");
+          setCurrentStep('completed');
       } catch (err) {
           setError(err.message);
       } finally {
@@ -616,6 +686,8 @@ function NewTrip() {
         return <AddStopsStep data={tripData} onDataChange={setTripData} cities={remainingCities} onAdd={handleAddStop} onRemove={handleRemoveStop} onStopDateChange={handleStopDateChange} />;
       case 'addActivities':
         return <AddActivitiesStep data={tripData.currentActivity} onInputChange={handleActivityInputChange} onSelectChange={handleActivitySelectChange} onAdd={handleAddActivity} onRemove={handleRemoveActivity} addedActivities={tripData.activities} />;
+      case 'addBudget':
+        return <AddBudgetStep budget={tripData.budget} onInputChange={handleBudgetInputChange} />;
       case 'completed':
         return <CompletionStep tripName={tripData.name} />;
       default:
@@ -630,7 +702,9 @@ function NewTrip() {
       case 'addStops':
         return <Button onClick={handleSaveStops} disabled={tripData.stops.length === 0 || loading} size="lg" className="h-11 px-6 text-base">{loading ? "Saving..." : "Save & Continue"}</Button>;
       case 'addActivities':
-        return <Button onClick={handleSaveActivities} disabled={tripData.activities.length === 0 || loading} size="lg" className="h-11 px-6 text-base">{loading ? "Finishing..." : "Finish & Create Trip"}</Button>;
+        return <Button onClick={handleSaveActivities} disabled={loading} size="lg" className="h-11 px-6 text-base">{loading ? "Saving Activities..." : "Continue to Budget"}</Button>;
+      case 'addBudget':
+        return <Button onClick={handleSaveBudget} disabled={loading} size="lg" className="h-11 px-6 text-base">{loading ? "Saving Budget..." : "Finish & Create Trip"}</Button>;
       case 'completed':
         return <Button onClick={handleStartOver} size="lg" className="h-11 px-6 text-base">Plan Another Trip</Button>;
       default:
@@ -644,14 +718,16 @@ function NewTrip() {
         <CardHeader>
           <CardTitle className="text-3xl font-bold">
             {currentStep === 'create' && 'Let’s Plan a New Trip! ✈️'}
-            {currentStep === 'addStops' && 'Where Are You Going? 🌍'}
+            {currentStep === 'addStops' && 'Where Are You Going? �'}
             {currentStep === 'addActivities' && 'What Will You Do? 🗺️'}
+            {currentStep === 'addBudget' && 'What\'s Your Budget? 💰'}
             {currentStep === 'completed' && 'Trip Planned! 🎉'}
           </CardTitle>
           <CardDescription className="text-base">
             {currentStep === 'create' && 'Fill in the basic details to get started.'}
             {currentStep === 'addStops' && 'Select a country, add cities, and set dates for each stop.'}
             {currentStep === 'addActivities' && 'List some of the activities you have planned.'}
+            {currentStep === 'addBudget' && 'Enter your estimated costs for the trip.'}
             {currentStep === 'completed' && `Your trip "${tripData.name}" has been created successfully.`}
           </CardDescription>
         </CardHeader>
@@ -807,6 +883,35 @@ const AddActivitiesStep = ({ data, onInputChange, onSelectChange, onAdd, onRemov
         )}
     </div>
 );
+
+const AddBudgetStep = ({ budget, onInputChange }) => (
+    <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+                <Label htmlFor="transportCost" className="text-base">Transport Cost</Label>
+                <Input id="transportCost" type="number" placeholder="e.g., 500" value={budget.transportCost} onChange={onInputChange} className="h-11 text-base" />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="stayCost" className="text-base">Accommodation Cost</Label>
+                <Input id="stayCost" type="number" placeholder="e.g., 1000" value={budget.stayCost} onChange={onInputChange} className="h-11 text-base" />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="mealsCost" className="text-base">Meals Cost</Label>
+                <Input id="mealsCost" type="number" placeholder="e.g., 300" value={budget.mealsCost} onChange={onInputChange} className="h-11 text-base" />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="activitiesCost" className="text-base">Activities Cost</Label>
+                <Input id="activitiesCost" type="number" value={budget.activitiesCost} disabled className="h-11 text-base bg-gray-100" />
+            </div>
+        </div>
+        <div className="pt-4 border-t">
+            <div className="flex justify-end items-center">
+                 <p className="text-lg font-semibold">Total Estimated Cost: <span className="text-2xl font-bold text-green-600">${budget.totalCost.toFixed(2)}</span></p>
+            </div>
+        </div>
+    </div>
+);
+
 
 const CompletionStep = ({ tripName }) => (
   <div className="text-center py-8">
