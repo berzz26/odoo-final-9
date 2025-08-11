@@ -58,6 +58,7 @@ export default function NewTrip() {
             stops,
             startDate: start,
             endDate: end,
+            coverPhoto: "",
         });
     };
 

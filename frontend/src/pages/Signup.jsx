@@ -38,7 +38,6 @@ const Signup = () => {
     setLoading(true);
     setError(null);
 
-    // --- Step 1: Register the user with text data ---
     try {
       const signupResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/signup`, {
         method: 'POST',
