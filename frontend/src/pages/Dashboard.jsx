@@ -3,19 +3,51 @@ import { useNavigate } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
+// Placeholder data for the carousel since it was not defined
+const scenicPhotos = [
+  "https://images.unsplash.com/photo-1501785888041-af3ef285b947?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNTY3MHwwfDF8c2VhcmNofDR8fHRyYXZlbHxlbnwwfHx8fDE2Mzc3NjY4Mzg&ixlib=rb-1.2.1&q=80&w=1080",
+  "https://images.unsplash.com/photo-1506197603052-3be9359e7311?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNTY3MHwwfDF8c2VhcmNofDIyfHx0cmF2ZWx8ZW58MHx8fHwxNjM3NzY2ODM4&ixlib=rb-1.2.1&q=80&w=1080",
+  "https://images.unsplash.com/photo-1476514525535-07fb1b520282?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNTY3MHwwfDF8c2VhcmNofDQwfHx0cmF2ZWx8ZW58MHx8fHwxNjM3NzY2ODM4&ixlib=rb-1.2.1&q=80&w=1080"
+];
+const token = localStorage.getItem("authToken")
 const Dashboard = () => {
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
+  const [spots, setSpots] = useState([]); // New state to hold fetched spots
   const [loading, setLoading] = useState(true);
-  const [isAuth, setIsAuth] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
 
+  // Function to fetch all spots
+  const fetchAllSpots = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/stop/getAllStop`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch all spots.");
+      }
+      const data = await response.json();
+      setSpots(data); // Set the fetched data to the spots state
+    } catch (error) {
+      console.error("Error fetching all spots:", error.message);
+    }
+  };
+
+  // useEffect to handle authentication and fetching user trips
   useEffect(() => {
-    const checkAuth = async () => {
+    const checkAuthAndFetchData = async () => {
+      setLoading(true);
       const token = localStorage.getItem('authToken');
 
       if (token) {
         try {
-          const response = await fetch('http://192.168.103.71:3000/api/auth/me', {
+          // Check authentication
+          const authResponse = await fetch('http://192.168.103.71:3000/api/auth/me', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -23,8 +55,10 @@ const Dashboard = () => {
             }
           });
 
-          if (response.ok) {
+          if (authResponse.ok) {
             setIsAuth(true);
+
+            // Fetch trips after successful authentication
             const tripsResponse = await fetch('http://192.168.103.71:3000/api/trips', {
               headers: {
                 'Authorization': `Bearer ${token}`
@@ -35,12 +69,8 @@ const Dashboard = () => {
               throw new Error('Failed to fetch trips');
             } else {
               const data = await tripsResponse.json();
-              
-              // Filter to only show past trips (where end date has passed)
               const currentDate = new Date();
               const pastTrips = data.filter(trip => new Date(trip.endDate) < currentDate);
-              
-              // Sort by start date (most recent first)
               const sortedTrips = pastTrips.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
               setTrips(sortedTrips);
             }
@@ -58,10 +88,12 @@ const Dashboard = () => {
       } else {
         setIsAuth(false);
         navigate('/login');
+        setLoading(false);
       }
     };
 
-    checkAuth();
+    checkAuthAndFetchData();
+    fetchAllSpots(); // Call the fetchAllSpots function
   }, [navigate]);
 
   const handleNewTripClick = () => {
@@ -84,7 +116,7 @@ const Dashboard = () => {
       }
 
       return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 !bg-#FCEFCB">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 !bg-[#FCEFCB]">
           {trips.map((trip) => (
             <div key={trip.id} className="bg-[#2D3039] border border-[#4A4E5A] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <img
@@ -96,7 +128,8 @@ const Dashboard = () => {
                 <h4 className="text-xl font-bold mb-1">{trip.name}</h4>
                 <p className="text-sm text-gray-400 mb-2">{trip.description}</p>
                 <div className="flex items-center text-sm text-gray-500 mb-2">
-                  <svg className="w-4 h-4 mr-1 text-[#8338EC]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6 2a1 1 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 100-2H6z" clipRule="evenodd"></path></svg>
+                  {/* Corrected SVG path for the calendar icon */}
+                  <svg className="w-4 h-4 mr-1 text-[#8338EC]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"></path></svg>
                   <span>{formatDate(trip.startDate)} - {formatDate(trip.endDate)}</span>
                 </div>
                 <div className="flex items-center text-sm text-gray-500">
@@ -153,16 +186,21 @@ const Dashboard = () => {
           <button className="w-full md:w-auto !bg-[#FAD59A] border border-[#4A4E5A] rounded-lg px-6 py-3 hover:border-[#000000] transition-colors text-black">Sort by</button>
         </div>
 
-        <div>
+        {/* <div>
           <h3 className="text-2xl font-bold mb-4 text-black">Popular Regional Selections</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            <div className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#000000] transition-colors"></div>
-            <div className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#000000] transition-colors"></div>
-            <div className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#000000] transition-colors"></div>
-            <div className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#000000] transition-colors"></div>
-            <div className="bg-[#FAD59A] border border-[#4A4E5A] rounded-lg h-32 w-full hover:border-[#000000] transition-colors"></div>
+            {spots.length > 0 ? (
+              spots.map(spot => (
+                <div key={spot.id} className="p-4 border rounded-md shadow-sm">
+                  <h4 className="font-semibold">{spot.city}</h4>
+                  <p className="text-sm text-gray-500">{spot.country}</p>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-600">No spots found.</p>
+            )}
           </div>
-        </div>
+        </div> */}
 
         <div>
           <h3 className="text-2xl font-bold mb-4 text-black">
