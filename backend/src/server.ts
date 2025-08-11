@@ -18,14 +18,14 @@ import routes from "./routes/index.js";
 const app = express();
 
 // CORS setup (important for cookies + frontend on different port)
-const FRONTEND_URL = process.env.FRONTEND_URL;
 
 app.use(
   cors({
-    origin: FRONTEND_URL, // frontend URL
-    credentials: true, // allow cookies from browser
-  }),
+    origin: "*", // allow all origins
+    credentials: false, // can't use credentials with '*'
+  })
 );
+
 
 app.use(cookieParser());
 app.use(express.json());

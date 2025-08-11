@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import prisma from "../config/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import type { User } from "@prisma/client";
 
 const jwtSecret = process.env.JWT_SECRET!;
 
@@ -26,15 +27,15 @@ export const signup = async (req: Request, res: Response) => {
                 country,
                 city,
                 phone,
-                role
+                role: "USER"
             }
         });
 
-       
+
 
         res.status(201).json({
             message: "Signup successful",
-            
+
             user: { id: user.id, name: user.name, email: user.email }
         });
     } catch (err) {
@@ -71,6 +72,23 @@ export const login = async (req: Request, res: Response) => {
         });
     } catch (err) {
         console.error("Login error:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
+export const getUserDetails = async (req: Request, res: Response): Promise<void> => {
+    const id = req.user?.userId;
+    if (!id) {
+        res.status(401).json({ success: false, message: "Unauthorized" });
+        return;
+    }
+    try {
+        const user = await prisma.user.findUniqueOrThrow({ where: { id } });
+        res.status(200).json(user);
+
+    } catch (error) {
+        console.error("get error:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 };
