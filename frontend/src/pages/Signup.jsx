@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-
 const Signup = () => {
   const navigate = useNavigate();
 
-
+  // State for all form fields, ensuring all inputs are controlled
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
+    phone: '',
+    city: '',
     country: '',
+    additionalInfo: '',
   });
-
 
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,38 +33,77 @@ const Signup = () => {
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
+    // --- Step 1: Register the user with text data ---
     try {
-      const response = await fetch('https://odoo-final-9.onrender.com/api/auth/signup', {
+      const signupResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          name: formData.name, 
-          email: formData.email, 
-          password: formData.password, 
-          country: formData.country
-        }),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          country: formData.country,
+          phone: formData.phone,
+          city: formData.city,
+        }), 
       });
 
-      const result = await response.json();
+      const signupResult = await signupResponse.json();
 
-      if (!response.ok) {
-
-        throw new Error(result.message || 'Registration failed. Please try again.');
+      if (!signupResponse.ok) {
+        throw new Error(signupResult.message || 'User registration failed.');
       }
 
-      console.log('Registration successful.');
-  
+      const { token } = signupResult;
+      
+      // --- Step 2: If registration is successful and there's an avatar, upload it ---
+      if (token && avatarFile) {
+        console.log('User created, now uploading avatar...');
+        const avatarFormData = new FormData();
+        avatarFormData.append('avatar', avatarFile);
+
+        // FIXED: Replaced the hardcoded local IP with the environment variable
+        // This ensures the avatar is sent to the same server as the signup request.
+        const avatarResponse = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/upload/avatar`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+            body: avatarFormData,
+          }
+        );
+
+        if (!avatarResponse.ok) {
+          const avatarErrorResult = await avatarResponse.json();
+          throw new Error(avatarErrorResult.message || 'Avatar upload failed.');
+        }
+        console.log('Avatar uploaded successfully.');
+      }
+      
+      // Store token and navigate after all steps are complete
+      if (token) {
+        const now = new Date();
+        const expirationTime = now.getTime() + 7 * 24 * 60 * 60 * 1000; 
+        const item = {
+          token: token,
+          expires: expirationTime,
+        };
+        localStorage.setItem('authToken', JSON.stringify(item));
+        console.log('Process complete, token stored.');
+      }
+
       alert('Registration successful! Please log in.');
       navigate('/login');
 
-    } catch (err)      {
-      console.error('Registration error:', err);
+    } catch (err) {
+      console.error('Registration process error:', err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -95,24 +133,37 @@ const Signup = () => {
 
           {/* Form Fields Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
+            <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
             <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
             <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
             <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" />
-            <div className="grid grid-cols-2 gap-4">
-              <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" />
-              <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
-            </div>
+            <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" />
+            <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
           </div>
           
-          
+         
+
+          {/* Error Message Display */}
+          {error && <p className="text-red-500 text-center">{error}</p>}
 
           {/* Submit Button */}
           <div className="text-center pt-4">
-            <button type="submit" className="bg-[#8338EC] text-white rounded-full px-10 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 font-semibold">
-              Register User
+            <button 
+              type="submit" 
+              className="bg-[#8338EC] text-white rounded-full px-10 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 font-semibold disabled:bg-gray-500 disabled:cursor-not-allowed"
+              disabled={loading}
+            >
+              {loading ? 'Registering...' : 'Register User'}
             </button>
           </div>
+
+          {/* Link to Login Page */}
+          <p className="text-center text-sm text-gray-400 pt-4">
+            Already have an account?{' '}
+            <Link to="/login" className="font-semibold text-[#8338EC] hover:underline">
+              Log In
+            </Link>
+          </p>
         </form>
       </div>
     </div>
