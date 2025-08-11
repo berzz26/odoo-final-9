@@ -38,3 +38,7 @@ export const getStopById = async (id: string) => {
         },
     });
 };
+
+export const getAllStops = async () => {
+    return prisma.stop.findMany();
+}
