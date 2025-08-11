@@ -5,6 +5,7 @@ import stopRoutes from "./stop.routes.js";
 import activityRoutes from "./activity.routes.js";
 import budgetRoutes from "./budget.routes.js";
 import profileRoutes from "./profile.routes.js";
+import uploadRoutes from "./upload.routes.js";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/", stopRoutes);
 router.use("/", activityRoutes);
 router.use("/", budgetRoutes);
 router.use("/", profileRoutes);
+router.use("/", uploadRoutes);
 
 export default router;
