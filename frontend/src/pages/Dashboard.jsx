@@ -74,10 +74,11 @@ const Dashboard = () => {
       </div>
 
       {/* --- Floating Action Button --- */}
-      <button className="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-[#8338EC] text-white rounded-full p-4 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105">
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-        <span className="sr-only">Plan a new trip</span>
+      <button className="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-[#8338EC] text-white rounded-full px-6 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 flex items-center gap-2">
+        <span className="font-semibold text-2xl">+</span>
+        <span className="font-semibold">Plan a trip</span>
       </button>
+
 
     </div>
   );
