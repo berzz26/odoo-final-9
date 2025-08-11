@@ -1,34 +1,30 @@
-// The service handles the core logic for interacting with Supabase Storage.
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from '@supabase/supabase-js';
 
-// if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
-//   throw new Error('SUPABASE_URL and SUPABASE_ANON_KEY must be defined in environment variables');
-// }
 
-const supabaseUrl = "https://ydidkzndnksvghtdzmql.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlkaWRrem5kbmtzdmdodGR6bXFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ4ODc3NTYsImV4cCI6MjA3MDQ2Mzc1Nn0.af7jcn-MYrOD--BzUOLht0-lkYUVpBJJNqFS6blQIVM";
+const supabaseUrl = process.env.SUPABASE_URL!;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!; // Use the service role key here
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Create a Supabase client instance with the service role key
+const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-export const uploadProfilePhoto = async (file: any, userId: string) => {
-  const fileExt = file.originalname.split(".").pop();
-  const filePath = `${userId}/${Date.now()}.${fileExt}`;
+export const uploadProfilePhoto = async (file: Express.Multer.File, userId: string) => {
+  // Your upload logic remains the same, but the client now has elevated permissions.
+  const fileExt = file.originalname.split('.').pop();
+  const filePath = `avatars/${userId}/${Date.now()}.${fileExt}`;
 
   const { data, error } = await supabase.storage
-    .from("avatars")
+    .from('user-profiles')
     .upload(filePath, file.buffer, {
       upsert: true,
       contentType: file.mimetype,
     });
-  console.log(data);
 
   if (error) {
-    throw new Error("Failed to upload file to Supabase: " + error.message);
+    throw new Error('Failed to upload file to Supabase: ' + error.message);
   }
 
-  // Get the public URL to return
   const { data: publicUrlData } = supabase.storage
-    .from("avatars")
+    .from('user-profiles')
     .getPublicUrl(filePath);
 
   return publicUrlData.publicUrl;

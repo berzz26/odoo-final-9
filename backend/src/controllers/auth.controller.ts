@@ -60,7 +60,7 @@ export const login = async (req: Request, res: Response) => {
         }
 
         const token = jwt.sign(
-            { userId: user.id, role: "USER", },
+            { userId: user.id, email: user.email, name: user.name, avatarUrl: user.avatarUrl },
             jwtSecret,
             { expiresIn: "7d" }
         );
@@ -68,7 +68,7 @@ export const login = async (req: Request, res: Response) => {
         res.json({
             message: "Login successful",
             token,
-            user: { id: user.id, name: user.name, email: user.email }
+            user: { id: user.id, name: user.name, email: user.email, avatarUrl: user.avatarUrl }
         });
     } catch (err) {
         console.error("Login error:", err);
@@ -92,6 +92,8 @@ export const getUserDetails = async (req: Request, res: Response): Promise<void>
                 email: true,
                 country: true,
                 city: true,
+                avatarUrl: true,
+                role: true
 
                 // Add any other fields you want to include
             }
