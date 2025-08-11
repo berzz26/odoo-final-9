@@ -24,10 +24,14 @@ export const getAllTrips = async (req: Request, res: Response) => {
  */
 export const createTrip = async (req: Request, res: Response) => {
   try {
-    const newTrip = await tripService.createTrip(req.body);
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ message: "user not found" })
+    }
+    const newTrip = await tripService.createTrip(req.body, userId);
     res.status(201).json(newTrip);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to create trip' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to create trip', err });
   }
 };
 

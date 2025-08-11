@@ -23,11 +23,15 @@ export const getAllTrips = async (userId: string) => {
  * @param tripData The data for the new trip.
  * @returns The newly created trip.
  */
-export const createTrip = async (tripData: any) => {
+export const createTrip = async (tripData: any, userId: string) => {
   return prisma.trip.create({
-    data: tripData,
+    data: {
+      ...tripData,
+      userId, // ensure it comes from authenticated user, not client
+    },
   });
 };
+
 
 /**
  * Get a trip by its ID, including related data.
