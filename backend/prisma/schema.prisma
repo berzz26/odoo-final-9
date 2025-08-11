@@ -1,15 +1,75 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// schema.prisma
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  trips     Trip[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Trip {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  coverPhoto  String?
+  stops       Stop[]
+  budget      Budget?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Stop {
+  id        String     @id @default(uuid())
+  tripId    String
+  city      String
+  country   String?
+  startDate DateTime
+  endDate   DateTime
+  activities Activity[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  trip Trip @relation(fields: [tripId], references: [id])
+}
+
+model Activity {
+  id          String   @id @default(uuid())
+  stopId      String
+  name        String
+  description String?
+  category    String? // e.g., sightseeing, food, adventure
+  cost        Float?   // estimated cost
+  duration    Int?     // in minutes
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  stop Stop @relation(fields: [stopId], references: [id])
+}
+
+model Budget {
+  id             String  @id @default(uuid())
+  tripId         String  @unique
+  transportCost  Float   @default(0)
+  stayCost       Float   @default(0)
+  activitiesCost Float   @default(0)
+  mealsCost      Float   @default(0)
+  totalCost      Float   @default(0)
+
+  trip Trip @relation(fields: [tripId], references: [id])
 }
