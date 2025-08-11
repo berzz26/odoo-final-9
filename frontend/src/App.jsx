@@ -6,6 +6,8 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ItenarySection from "./pages/ItenarySection";
 import TripItenary from "./pages/TripItenary";
+import Triplisting from "./pages/Triplisting";
+
 
 
 
@@ -34,6 +36,8 @@ export default function App() {
           <Route path="/trips/:tripId" element={<TripItenary />} />
            <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup/>}/>
+        <Route path="/triplisting" element={<Triplisting />} />
+        {/* <Route path="/tripcard" element={<tripCard />} /> */}
         <Route path="*" element={<div>Not found</div>} />
       </Route>
     </Routes>
