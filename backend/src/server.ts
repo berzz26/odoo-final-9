@@ -38,6 +38,8 @@ app.get("/", (req: Request, res: Response) => {
 
 //mount the routes
 app.use("/api", routes);
+
+
 const PORT = process.env.PORT;
 if (!PORT) {
   throw new Error("Port in env not defined");
