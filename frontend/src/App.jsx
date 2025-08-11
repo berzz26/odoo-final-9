@@ -1,6 +1,8 @@
 import { Routes, Route, Link, Outlet } from "react-router-dom"
 import NewTrip from "./pages/NewTrip"
 import Dashboard from "./pages/Dashboard"
+import Login from "./pages/Login"
+import Signup from "./pages/Signup"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -41,7 +43,7 @@ function Layout() {
         </div>
       </header>
 
-      <main className="container mx-auto max-w-5xl p-6">
+     <main className="w-screen min-h-screen p-0 m-0 bg-gray-50">
         <Outlet />
       </main>
     </div>
@@ -50,20 +52,15 @@ function Layout() {
 
 export default function App() {
   return (
-    <>
-      <nav style={{ display: 'flex', gap: 12, margin: '12px 0' }}>
-  <Link to="/newtrip">New Trip</Link>
-      </nav>
-
- 
-      <Routes>
-   <Route path="/" element={<Dashboard />} />
-  <Route path="/newtrip" element={<NewTrip />} />
-  <Route path="/signup" element={<Signup />} />
-
-  
-        <Route path="*" element={<div style={{padding:16}}>Not found</div>} />
-      </Routes>
-    </>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/newtrip" element={<NewTrip />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        
+        <Route path="*" element={<div>Not found</div>} />
+      </Route>
+    </Routes>
   )
 }

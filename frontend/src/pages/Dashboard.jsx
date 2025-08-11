@@ -1,18 +1,14 @@
 import React from 'react';
-// 1. Import the useNavigate hook
+
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-  // 2. Initialize the navigate function
   const navigate = useNavigate();
-
-  // 3. Create a handler function to navigate
   const handleNewTripClick = () => {
     navigate('/newtrip');
   };
 
   return (
-    // The main container is set to full screen width and height
     <div className="bg-[#1E212B] min-h-screen w-screen text-[#EAECEE] font-sans">
       
       {/* --- Navbar Section --- */}
@@ -20,10 +16,14 @@ const Dashboard = () => {
         <div className="container mx-auto flex justify-between items-center px-4">
           <div className="text-xl font-bold">GlobalTrotter</div>
           <div className="flex items-center space-x-4">
-            <button className="bg-[#8338EC] text-white px-4 py-1 rounded-md text-sm font-semibold hover:bg-opacity-80 transition-colors">
+            <button 
+            onClick={() => navigate('/signup')}
+            className="bg-[#8338EC] text-white px-4 py-1 rounded-md text-sm font-semibold hover:bg-opacity-80 transition-colors">
               SignUp
             </button>
-            <button className="bg-[#8338EC] text-white px-4 py-1 rounded-md text-sm font-semibold hover:bg-opacity-80 transition-colors">
+            <button 
+            onClick = {() => navigate('/login')}
+            className="bg-[#8338EC] text-white px-4 py-1 rounded-md text-sm font-semibold hover:bg-opacity-80 transition-colors">
               Login
             </button>
             <div className="hidden md:block w-9 h-9 rounded-full border-2 border-white"></div>
@@ -77,8 +77,7 @@ const Dashboard = () => {
 
       </div>
 
-      {/* --- Floating Action Button --- */}
-      {/* 4. Add the onClick handler to the button */}
+      
       <button 
         onClick={handleNewTripClick}
         className="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-[#8338EC] text-white rounded-full px-6 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 flex items-center gap-2"
