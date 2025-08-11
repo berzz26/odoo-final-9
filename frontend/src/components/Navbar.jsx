@@ -71,6 +71,8 @@ export default function Navbar() {
           GlobalTrotter
         </Link>
         <div className="ml-auto flex items-center gap-6">
+        <Link to="/community" className="text-xl font-semibold px-2 py-1 rounded-md transition-colors hover:bg-gray-500/10">Community</Link>
+
           {/* My Trips dropdown - only when logged in */}
           {!isLoading && isLoggedIn && (
             <DropdownMenu>
@@ -94,6 +96,7 @@ export default function Navbar() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            
           )}
 
           {/* Avatar if logged in, or sign up/login links if not */}
@@ -110,6 +113,7 @@ export default function Navbar() {
                 </AvatarFallback>
               </Avatar>
             </Link>
+            
           ) : (
             <div className="flex items-center gap-3">
               <Link
