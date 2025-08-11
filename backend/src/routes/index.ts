@@ -15,6 +15,6 @@ router.use("/auth", authRoutes);
 // router.use("/", activityRoutes);
 // router.use("/", budgetRoutes);
 // router.use("/", profileRoutes);
-router.use("/", uploadRoutes);
+router.use("/upload", uploadRoutes);
 
 export default router;

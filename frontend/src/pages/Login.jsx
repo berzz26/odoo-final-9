@@ -4,23 +4,22 @@ import { useNavigate, Link } from 'react-router-dom';
 const Login = () => {
   const navigate = useNavigate();
 
-  // State for form fields
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // State for loading and error handling
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Handle form submission
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      // --- API Call ---
-      // Replace '/api/login' with your actual backend endpoint.
+     
       const response = await fetch('https://odoo-final-9.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -35,11 +34,10 @@ const Login = () => {
       const result = await response.json();
       console.log('Login successful:', result);
       
-      // Store the auth token (e.g., in localStorage or context)
-      // localStorage.setItem('authToken', result.token);
+      localStorage.setItem('authToken', result.token);
 
-      // On success, navigate to the dashboard
-      navigate('/dashboard');
+  
+      navigate('/');
 
     } catch (err) {
       console.error('Login error:', err);
@@ -50,8 +48,8 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[#1E212B] min-h-screen w-full text-[#EAECEE] font-sans flex items-center justify-center p-4">
-      {/* UPDATED: Changed max-w-sm to max-w-4xl to match the registration page width */}
+    <div className="bg-[#1E212B] min-h-screen w-screen text-[#EAECEE] font-sans flex items-center justify-center p-4">
+     
       <div className="w-full max-w-4xl">
         <h1 className="text-3xl font-bold text-center mb-6">Login Screen</h1>
         
