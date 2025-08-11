@@ -109,7 +109,7 @@ export default function NewTrip() {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/trips", {
+      const response = await fetch("http://192.168.103.71:3000/api/trips", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +125,7 @@ export default function NewTrip() {
 
       const newTrip = await response.json();
       console.log("Trip created successfully:", newTrip);
-      navigate('/dashboard');
+      navigate('/');
 
     } catch (err) {
       setError(err.message);
