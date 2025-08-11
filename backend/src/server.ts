@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-dotenv.config();
+// import dotenv from "dotenv";
+// dotenv.config();
 
 // Debug: Check if environment variables are loaded
 // console.log('Environment Variables:', {
