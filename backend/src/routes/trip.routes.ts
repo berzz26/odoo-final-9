@@ -5,7 +5,8 @@ import {
     createTrip,
     getTripById,
     updateTrip,
-    deleteTrip
+    deleteTrip,
+    getSpecificTrip
 } from "../controllers/trip.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/zod.middleware.js";
@@ -16,8 +17,9 @@ const router = Router();
 // Routes for base trip management. All start with /
 router.get("/", authenticate, getAllTrips);
 router.post("/", authenticate, validate(tripSchema), createTrip);
-router.get("/:id", authenticate, getTripById);
+router.get("/", authenticate, getTripById);
 router.put("/:id", authenticate, validate(tripSchema), updateTrip);
 router.delete("/:id", authenticate, deleteTrip);
 
+router.get("/:id", authenticate, getSpecificTrip);
 export default router;
