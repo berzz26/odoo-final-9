@@ -11,10 +11,10 @@ const app = express();
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
 app.use(
-    cors({
-        origin: FRONTEND_URL, // frontend URL
-        credentials: true, // allow cookies from browser
-    }),
+  cors({
+    origin: FRONTEND_URL, // frontend URL
+    credentials: true, // allow cookies from browser
+  }),
 );
 
 app.use(cookieParser());
@@ -23,15 +23,15 @@ app.use(express.urlencoded({ extended: true }));
 
 // Health check
 app.get("/", (req: Request, res: Response) => {
-    res.send("Team - 09 GlobalTrotter backend server running");
+  res.send("Team - 09 GlobalTrotter backend server running");
 });
 
 //mount the routes
 // app.use("/api", routes);
 const PORT = process.env.PORT;
 if (!PORT) {
-    throw new Error("Port in env not defined")
+  throw new Error("Port in env not defined");
 }
 app.listen(PORT, () => {
-    console.log(`Backend is up`);
+  console.log(`Backend is up`);
 });

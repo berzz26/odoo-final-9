@@ -23,6 +23,7 @@ model User {
   trips     Trip[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  avatarUrl String?
 }
 
 model Trip {
