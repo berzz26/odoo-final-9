@@ -1,0 +1,155 @@
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+
+const Signup = () => {
+  const navigate = useNavigate();
+
+  // State for all form fields, ensuring all inputs are controlled
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    phone: '',
+    city: '',
+    country: '',
+    additionalInfo: '',
+  });
+
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatarFile(file);
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Step 1: Signup request
+      const signupResponse = await fetch(`http://localhost:3000/api/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          country: formData.country,
+          phone: formData.phone,
+          city: formData.city,
+        }),
+      });
+
+      const signupResult = await signupResponse.json();
+      console.log(signupResult);
+
+      if (!signupResponse.ok) throw new Error(signupResult.message || 'User registration failed.');
+
+      const { token } = signupResult.user;
+      if (!token) throw new Error('No token returned from signup.');
+
+      // Step 2: Avatar upload (if selected)
+      if (avatarFile) {
+        const avatarFormData = new FormData();
+        avatarFormData.append('avatar', avatarFile);
+
+        const avatarResponse = await fetch(`http://localhost:3000/api/upload/avatar`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: avatarFormData,
+        });
+
+        const avatarResult = await avatarResponse.json();
+        if (!avatarResponse.ok) throw new Error(avatarResult.message || 'Avatar upload failed.');
+      }
+
+      // Step 3: Store token and redirect
+      const expirationTime = Date.now() + 7 * 24 * 60 * 60 * 1000;
+      localStorage.setItem('authToken', JSON.stringify({ token, expires: expirationTime }));
+
+      alert('Registration successful! Please log in.');
+      navigate('/login');
+
+    } catch (err) {
+      console.error('Registration process error:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  return (
+    <div className="bg-[#1E212B] min-h-screen w-screen text-[#EAECEE] font-sans flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl">
+        <h1 className="text-3xl font-bold text-center mb-6">Registration Screen</h1>
+
+        <form onSubmit={handleSubmit} className="bg-[#2D3039] border-2 border-[#4A4E5A] rounded-lg p-8 space-y-6">
+
+          {/* Avatar Upload Section */}
+          <div className="flex justify-center">
+            <label htmlFor="avatar-upload" className="cursor-pointer">
+              <div className="w-32 h-32 rounded-full bg-[#1E212B] border-2 border-dashed border-[#4A4E5A] flex items-center justify-center text-gray-400 overflow-hidden">
+                {avatarPreview ? (
+                  <img src={avatarPreview} alt="Avatar Preview" className="w-full h-full object-cover" />
+                ) : (
+                  <span>Photo</span>
+                )}
+              </div>
+            </label>
+            <input id="avatar-upload" type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+          </div>
+
+          {/* Form Fields Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
+            <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
+            <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
+            <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" />
+            <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" />
+            <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" required />
+          </div>
+
+
+
+          {/* Error Message Display */}
+          {error && <p className="text-red-500 text-center">{error}</p>}
+
+          {/* Submit Button */}
+          <div className="text-center pt-4">
+            <button
+              type="submit"
+              className="bg-[#8338EC] text-white rounded-full px-10 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 font-semibold disabled:bg-gray-500 disabled:cursor-not-allowed"
+              disabled={loading}
+            >
+              {loading ? 'Registering...' : 'Register User'}
+            </button>
+          </div>
+
+          {/* Link to Login Page */}
+          <p className="text-center text-sm text-gray-400 pt-4">
+            Already have an account?{' '}
+            <Link to="/login" className="font-semibold text-[#8338EC] hover:underline">
+              Log In
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Signup;

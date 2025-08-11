@@ -1,18 +1,35 @@
-import { Routes, Route, Link } from 'react-router-dom'
-import NewTrip from "./pages/NewTrip"
+import { Routes, Route, Outlet, useLocation } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Dashboard from "./pages/Dashboard";
+import NewTrip from "./pages/NewTrip";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+
+function Shell() {
+  const full = true;
+
+  return (
+    <div className="min-h-dvh bg-background text-foreground">
+      <Navbar />
+      <main className={full ? "w-full" : "mx-auto w-full max-w-5xl px-4 py-6"}>
+        <Outlet />
+      </main>
+    </div>
+  );
+}
+
 
 export default function App() {
   return (
-    <>
-      <nav style={{ display: 'flex', gap: 12, margin: '12px 0' }}>
-  <Link to="/newtrip">New Trip</Link>
-      </nav>
-
-      <Routes>
-  <Route path="/" element={<div style={{padding:16}}>Home</div>} />
-  <Route path="/newtrip" element={<NewTrip />} />
-        <Route path="*" element={<div style={{padding:16}}>Not found</div>} />
-      </Routes>
-    </>
-  )
+    <Routes>
+      <Route element={<Shell />}>
+        <Route index element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/newtrip" element={<NewTrip />} />
+        <Route path="/signup" element={<Signup/>}/>
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<div>Not found</div>} />
+      </Route>
+    </Routes>
+  );
 }
