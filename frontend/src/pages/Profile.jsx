@@ -1,5 +1,5 @@
-import React, { useEffect, useState,useMemo } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
 } from "@/components/ui/card";
@@ -11,7 +11,6 @@ import { Trash2 } from "lucide-react";
 
 // TripCard now accepts an onDelete prop
 const TripCard = ({ trip, onDelete }) => {
-    // Format dates for display
     const formattedStartDate = new Date(trip.startDate).toLocaleDateString();
     const formattedEndDate = new Date(trip.endDate).toLocaleDateString();
 
@@ -19,15 +18,14 @@ const TripCard = ({ trip, onDelete }) => {
         <div className="bg-white border-1 border-gray/40 shadow-md rounded-lg p-6 text-left mb-4 flex justify-between items-center">
             <div>
                 <h3 className="text-xl font-bold text-black mb-2">{trip.name}</h3>
-                <p className="text-gray-400">{trip.description || 'No description available.'}</p>
+                <p className="text-gray-400">{trip.description || "No description available."}</p>
                 <div className="text-sm text-gray-500 mt-4">
                     <span>{formattedStartDate}</span> - <span>{formattedEndDate}</span>
                 </div>
             </div>
-            {/* Delete button for the trip card */}
-            <Button 
-                variant="destructive" 
-                size="icon" 
+            <Button
+                variant="destructive"
+                size="icon"
                 onClick={() => onDelete(trip.id)}
             >
                 <Trash2 className="h-4 w-4" />
@@ -38,6 +36,7 @@ const TripCard = ({ trip, onDelete }) => {
 
 export default function Profile() {
     const navigate = useNavigate();
+    const [avatarFile, setAvatarFile] = useState(null);
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [trips, setTrips] = useState([]);
@@ -45,35 +44,83 @@ export default function Profile() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [country, setCountry] = useState("");
-    const [city, setCity] = useState(""); // State for the city field
-    const [avatarUrl, setAvatarUrl] = useState(""); // State for the avatar URL
+    const [city, setCity] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState("");
 
-    // Corrected and fixed the handleTripDelete function
-    const handleTripDelete = async (tripId) => {
+    // 1) Update profile — PUT user fields
+    const handleUpdateProfile = async () => {
         try {
-            const token = localStorage.getItem('authToken');
-            if (!token) {
-                console.error('Authorization token not found.');
-                return;
+            const token = localStorage.getItem("authToken");
+            if (!token) throw new Error("No auth token");
+            let uploadedAvatarUrl = null;
+
+            // 1) If user selected a new avatar, upload it first
+            if (avatarFile) {
+                const avatarFormData = new FormData();
+                avatarFormData.append("avatar", avatarFile);
+
+                const avatarResponse = await fetch(`http://192.168.103.71:3000/api/upload/avatar`, {
+                    method: "POST",
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: avatarFormData,
+                });
+
+                const avatarResult = await avatarResponse.json();
+                if (!avatarResponse.ok) {
+                    throw new Error(avatarResult.message || "Avatar upload failed.");
+                }
+
+                // Try a few common keys – adjust to your API’s actual response
+                uploadedAvatarUrl =
+                    avatarResult.url ||
+                    avatarResult.avatarUrl ||
+                    avatarResult.path ||
+                    (typeof avatarResult === "string" ? avatarResult : null);
             }
 
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips/${tripId}`, {
-                method: "DELETE",
+
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/me`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
+                body: JSON.stringify({ name, email, country, city,avatarUrl :uploadedAvatarUrl|| avatarUrl || undefined }),
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to delete trip.");
-            }
-
-            // If deletion is successful, update the trips state by filtering out the deleted trip
-            setTrips(currentTrips => currentTrips.filter(trip => trip.id !== tripId));
+            if (!res.ok) throw new Error("Failed to save profile");
+            const updated = await res.json();
+            
+            setUser(updated);
         } catch (err) {
-            console.error("Error deleting trip:", err.message);
-            setError("Failed to delete trip. Please try again.");
+            setError(err.message || "Failed to save profile.");
+        }
+    };
+
+    // 2) Delete a trip — DELETE one trip by id
+    const handleTripDelete = async (tripId) => {
+        try {
+            const token = localStorage.getItem("authToken");
+            if (!token) throw new Error("No auth token");
+
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips/${tripId}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (!res.ok) throw new Error("Failed to delete trip");
+            setTrips((prev) => prev.filter((t) => t.id !== tripId));
+        } catch (err) {
+            setError(err.message || "Failed to delete trip.");
+        }
+    };
+    // replace your current handleAvatarChange with this:
+    const handleAvatarChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setAvatarFile(file);                         // keep the file for upload
+            const newAvatarUrl = URL.createObjectURL(file);
+            setAvatarUrl(newAvatarUrl);                  // instant preview
         }
     };
 
@@ -81,20 +128,19 @@ export default function Profile() {
     useEffect(() => {
         const fetchTrips = async () => {
             try {
-                // Retrieve the auth token from localStorage
-                const token = localStorage.getItem('authToken');
+                const token = localStorage.getItem("authToken");
                 if (!token) {
-                    throw new Error('Authorization token not found. Please log in.');
+                    throw new Error("Authorization token not found. Please log in.");
                 }
 
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
                     headers: {
-                        'Authorization': `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch trips.',response);
+                    throw new Error("Failed to fetch trips.", response);
                 }
 
                 const data = await response.json();
@@ -107,7 +153,7 @@ export default function Profile() {
         };
 
         fetchTrips();
-    }, []); // The empty dependency array ensures this runs only once
+    }, []); // runs once
 
     // Categorize trips based on their dates
     const categorizedTrips = useMemo(() => {
@@ -116,7 +162,7 @@ export default function Profile() {
         const upcoming = [];
         const completed = [];
 
-        trips.forEach(trip => {
+        trips.forEach((trip) => {
             const startDate = new Date(trip.startDate);
             const endDate = new Date(trip.endDate);
 
@@ -132,17 +178,6 @@ export default function Profile() {
         return { ongoing, upcoming, completed };
     }, [trips]);
 
-    // Function to handle the file upload
-    const handleAvatarChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            // Create a local URL for the selected image to display it immediately
-            const newAvatarUrl = URL.createObjectURL(file);
-            setAvatarUrl(newAvatarUrl);
-            // In a real application, you would also handle the upload to a server here.
-            // For example: uploadImage(file).then(url => setAvatarUrl(url));
-        }
-    };
 
     useEffect(() => {
         async function fetchUserData() {
@@ -156,7 +191,7 @@ export default function Profile() {
             try {
                 const response = await fetch("http://192.168.103.71:3000/api/auth/me", {
                     method: "GET",
-                    headers: { "Authorization": `Bearer ${authToken}` },
+                    headers: { Authorization: `Bearer ${authToken}` },
                 });
 
                 if (!response.ok) {
@@ -169,8 +204,8 @@ export default function Profile() {
                 setName(userData.name || "");
                 setEmail(userData.email || "");
                 setCountry(userData.country || "");
-                setCity(userData.city || ""); // Set initial city value
-                setAvatarUrl(userData.avatarUrl || ""); // Set initial avatar URL
+                setCity(userData.city || "");
+                setAvatarUrl(userData.avatarUrl || "");
             } catch (error) {
                 console.error("User data fetch failed:", error);
                 localStorage.removeItem("authToken");
@@ -211,7 +246,9 @@ export default function Profile() {
                             <Label htmlFor="avatar-upload" className="cursor-pointer">
                                 <Avatar className="h-48 w-48 border-2 border-black">
                                     <AvatarImage src={avatarUrl} alt="User Avatar" />
-                                    <AvatarFallback className="text-4xl">{user.email?.[0]?.toUpperCase() || "U"}</AvatarFallback>
+                                    <AvatarFallback className="text-4xl">
+                                        {user.email?.[0]?.toUpperCase() || "U"}
+                                    </AvatarFallback>
                                 </Avatar>
                             </Label>
                             <Input
@@ -267,7 +304,7 @@ export default function Profile() {
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-end p-6">
-                    <Button className="">Save Profile</Button>
+                    <Button className="" onClick={handleUpdateProfile}>Save Profile</Button>
                 </CardFooter>
             </Card>
 
@@ -279,7 +316,9 @@ export default function Profile() {
                 <CardContent>
                     <div>
                         {categorizedTrips.upcoming.length > 0 ? (
-                            categorizedTrips.upcoming.map(trip => <TripCard key={trip.id} trip={trip} onDelete={handleTripDelete} />)
+                            categorizedTrips.upcoming.map((trip) => (
+                                <TripCard key={trip.id} trip={trip} onDelete={handleTripDelete} />
+                            ))
                         ) : (
                             <p className="text-gray-600">No upcoming trips.</p>
                         )}
