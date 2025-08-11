@@ -48,6 +48,11 @@ export default function Profile() {
     const [avatarUrl, setAvatarUrl] = useState("");
 
     // 1) Update profile — PUT user fields
+
+    const handleLogout = async () =>{
+        localStorage.removeItem("authToken");
+        navigate("/")
+    }
     const handleUpdateProfile = async () => {
         try {
             const token = localStorage.getItem("authToken");
@@ -303,8 +308,9 @@ export default function Profile() {
                         </div>
                     </div>
                 </CardContent>
-                <CardFooter className="flex justify-end p-6">
+                <CardFooter className="flex justify-end gap-2 p-6">
                     <Button className="" onClick={handleUpdateProfile}>Save Profile</Button>
+                    <Button className="!bg-red-500" onClick={handleLogout}>Logout</Button>
                 </CardFooter>
             </Card>
 
