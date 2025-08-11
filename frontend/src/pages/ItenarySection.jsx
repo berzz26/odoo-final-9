@@ -6,12 +6,12 @@ import {
 import { Link } from 'react-router-dom';
 const TRIPS = [
     {
-        id: "college-makeout",              // dynamic id
+        id: "college-makeout",              
         title: "College Makeout",
         cover: "https://pbs.twimg.com/profile_images/490590018943983616/1QtYly1m.png",
     },
      {
-        id: "college-makeout",              // dynamic id
+        id: "college-makeout",             
         title: "College Makeout",
         cover: "https://pbs.twimg.com/profile_images/490590018943983616/1QtYly1m.png",
     },
