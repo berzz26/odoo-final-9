@@ -11,25 +11,6 @@ const Dashboard = () => {
   return (
     <div className="bg-[#1E212B] min-h-screen w-screen text-[#EAECEE] font-sans">
       
-      {/* --- Navbar Section --- */}
-      <nav className="bg-[#2D3039] text-white p-4 font-sans border-b-2 border-[#4A4E5A]">
-        <div className="container mx-auto flex justify-between items-center px-4">
-          <div className="text-xl font-bold">GlobalTrotter</div>
-          <div className="flex items-center space-x-4">
-            <button 
-            onClick={() => navigate('/signup')}
-            className="bg-[#8338EC] text-white px-4 py-1 rounded-md text-sm font-semibold hover:bg-opacity-80 transition-colors">
-              SignUp
-            </button>
-            <button 
-            onClick = {() => navigate('/login')}
-            className="bg-[#8338EC] text-white px-4 py-1 rounded-md text-sm font-semibold hover:bg-opacity-80 transition-colors">
-              Login
-            </button>
-            <div className="hidden md:block w-9 h-9 rounded-full border-2 border-white"></div>
-          </div>
-        </div>
-      </nav>
       
       {/* Main content area with responsive padding */}
       <div className="p-4 md:p-8 space-y-8 container mx-auto">
