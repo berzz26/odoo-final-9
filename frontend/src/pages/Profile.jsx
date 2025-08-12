@@ -234,7 +234,7 @@ export default function Profile() {
     }
 
     return (
-        <div className="flex flex-col items-center w-screen bg-white p-6 gap-6">
+        <div className="flex flex-col items-center w-screen !bg-#FCEFCB p-6 gap-6">
             <Card className="w-full max-w-6xl shadow-lg">
                 <CardHeader className="text-center">
                     <CardTitle className="text-3xl font-bold">User Profile</CardTitle>
