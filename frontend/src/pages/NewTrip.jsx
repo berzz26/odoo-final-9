@@ -162,6 +162,7 @@ function NewTrip() {
       coverPhoto: tripData.coverPhoto || undefined,
       isPublic: tripData.isPublic, // Include the new isPublic field
     };
+    console.log(tripPayload);
 
    try {
   const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
@@ -249,6 +250,7 @@ function NewTrip() {
             stopId: firstStopId,
             tripId: tripId,
           };
+          return fetch(`${import.meta.env.VITE_BACKEND_URL}/activity/${tripId}/stops/${firstStopId}/activities`, {
           return fetch(`${import.meta.process.env.VITE_BACKEND_URL}/activity/${tripId}/stops/${firstStopId}/activities`, {
             method: 'POST',
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
