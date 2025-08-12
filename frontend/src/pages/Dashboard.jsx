@@ -299,13 +299,13 @@ const Dashboard = () => {
               />
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
-              <button className="px-6 py-3 bg-amber-100 border border-amber-200 rounded-xl text-amber-800 hover:bg-amber-200 hover:border-amber-300 transition-all font-medium">
+              <button className="px-6 py-3 !bg-amber-100 border border-amber-200 rounded-xl text-amber-800 hover:bg-amber-200 hover:border-amber-300 transition-all font-medium">
                 Group by
               </button>
-              <button className="px-6 py-3 bg-amber-100 border border-amber-200 rounded-xl text-amber-800 hover:bg-amber-200 hover:border-amber-300 transition-all font-medium">
+              <button className="px-6 py-3 !bg-amber-100 border border-amber-200 rounded-xl text-amber-800 hover:bg-amber-200 hover:border-amber-300 transition-all font-medium">
                 Filter
               </button>
-              <button className="px-6 py-3 bg-amber-100 border border-amber-200 rounded-xl text-amber-800 hover:bg-amber-200 hover:border-amber-300 transition-all font-medium">
+              <button className="px-6 py-3 !bg-amber-100 border border-amber-200 rounded-xl text-amber-800 hover:bg-amber-200 hover:border-amber-300 transition-all font-medium">
                 Sort by
               </button>
             </div>
