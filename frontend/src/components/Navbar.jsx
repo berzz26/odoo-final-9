@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MapPin, PlusCircle, List, Calendar } from "lucide-react";
 
 // Custom hook for authentication state
 function useAuthStatus() {
@@ -59,38 +59,60 @@ function useAuthStatus() {
 
 export default function Navbar() {
   const { user, isLoggedIn, isLoading } = useAuthStatus();
-  const linkCls = "text-xl font-medium px-2 py-1 rounded-md transition-colors hover:bg-gray-500/10";
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
-      <nav className="mx-auto w-full max-w-5xl px-2 py-3 flex items-center">
+    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-amber-200 shadow-sm">
+      <nav className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center">
+        {/* Logo */}
         <Link
           to="/"
-          className="text-xl font-semibold px-2 py-1 rounded-md transition-colors hover:bg-gray-500/10"
+          className="text-2xl font-bold text-amber-900 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-amber-50 flex items-center gap-2"
+          style={{ fontFamily: '"Caveat", cursive' }}
         >
+          <MapPin className="h-6 w-6 text-amber-600" />
           GlobalTrotter
         </Link>
-        <div className="ml-auto flex items-center gap-6">
+
+        <div className="ml-auto flex items-center gap-4">
           {/* My Trips dropdown - only when logged in */}
           {!isLoading && isLoggedIn && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button
-                  className={`${linkCls} flex items-center gap-1 !bg-white !text-[#646CFF] !text-xl hover:bg-gray-100 dark:bg-white dark:text-gray-900`}
-                >
+                <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-200 rounded-xl text-amber-900 font-medium transition-all duration-200 hover:from-amber-200 hover:to-orange-200 hover:border-amber-300 hover:scale-105 shadow-sm">
                   My Trips
                   <ChevronDown className="h-4 w-4" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem asChild>
-                  <Link to="/itenary-section">Planned trips</Link>
+              <DropdownMenuContent 
+                align="end" 
+                className="w-56 bg-white border border-amber-200 rounded-xl shadow-xl p-2"
+              >
+                <DropdownMenuItem asChild className="rounded-lg">
+                  <Link 
+                    to="/itenary-section" 
+                    className="flex items-center gap-3 px-3 py-2 text-amber-900 hover:bg-amber-50 rounded-lg transition-colors"
+                  >
+                    <Calendar className="h-4 w-4 text-amber-600" />
+                    Planned Trips
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/newtrip">Create new trip</Link>
+                <DropdownMenuItem asChild className="rounded-lg">
+                  <Link 
+                    to="/newtrip" 
+                    className="flex items-center gap-3 px-3 py-2 text-amber-900 hover:bg-amber-50 rounded-lg transition-colors"
+                  >
+                    <PlusCircle className="h-4 w-4 text-amber-600" />
+                    Create New Trip
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/triplisting">List My Trips</Link>
+                <DropdownMenuItem asChild className="rounded-lg">
+                  <Link 
+                    to="/triplisting" 
+                    className="flex items-center gap-3 px-3 py-2 text-amber-900 hover:bg-amber-50 rounded-lg transition-colors"
+                  >
+                    <List className="h-4 w-4 text-amber-600" />
+                    List My Trips
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -101,29 +123,39 @@ export default function Navbar() {
             <Link
               to="/user-info"
               aria-label="Account"
-              className="rounded-full p-1 hover:bg-gray-500/10 transition-colors"
+              className="rounded-full p-1 hover:bg-amber-50 transition-all duration-200 hover:scale-110"
             >
-              <Avatar className="h-8 w-8">
+              <Avatar className="h-10 w-10 border-2 border-amber-200 shadow-sm">
                 <AvatarImage src={user?.avatarUrl} />
-                <AvatarFallback>
+                <AvatarFallback className="bg-gradient-to-br from-amber-100 to-orange-100 text-amber-900 font-semibold">
                   {user?.email?.[0]?.toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
             </Link>
           ) : (
+            !isLoading && (
+              <div className="flex items-center gap-3">
+                <Link
+                  to="/signup"
+                  className="px-4 py-2 rounded-xl font-medium text-amber-900 transition-all duration-200 hover:bg-amber-50 border border-transparent hover:border-amber-200"
+                >
+                  Sign up
+                </Link>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 rounded-xl font-medium text-white bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-200 hover:from-amber-600 hover:to-orange-600 hover:scale-105 shadow-md hover:shadow-lg"
+                >
+                  Login
+                </Link>
+              </div>
+            )
+          )}
+
+          {/* Loading state */}
+          {isLoading && (
             <div className="flex items-center gap-3">
-              <Link
-                to="/signup"
-                className="px-3 py-1.5 rounded-md font-semibold text-xl transition-colors hover:bg-gray-500/10"
-              >
-                Sign up
-              </Link>
-              <Link
-                to="/login"
-                className="px-3 py-1.5 rounded-md font-semibold text-xl transition-colors hover:bg-gray-500/10"
-              >
-                Login
-              </Link>
+              <div className="h-8 w-16 bg-amber-100 rounded-lg animate-pulse"></div>
+              <div className="h-8 w-16 bg-amber-100 rounded-lg animate-pulse"></div>
             </div>
           )}
         </div>
