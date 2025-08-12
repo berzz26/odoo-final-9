@@ -79,6 +79,9 @@ The app must properly use a **relational database** to store and query user-spec
 -  **deployment-link**
     http://13.202.224.27:8080/   
 
+- ** Video Link**
+- https://drive.google.com/file/d/1-yuGLFpoFpkU7uMudlrVwixSvbAtGW5y/view?usp=sharing
+
 
 
   
