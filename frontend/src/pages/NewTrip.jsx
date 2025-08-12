@@ -163,12 +163,12 @@ function NewTrip() {
       isPublic: tripData.isPublic, // Include the new isPublic field
     };
 
-    try {
-      const response = await fetch("http://192.168.103.71:3000/api/trips", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-        body: JSON.stringify(tripPayload),
-      });
+   try {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+    body: JSON.stringify(tripPayload),
+  });
 
       if (!response.ok) throw new Error((await response.json()).message || "Failed to create trip.");
 
@@ -200,7 +200,7 @@ function NewTrip() {
           endDate: stop.endDate,
           tripId: tripId,
         };
-        return fetch(`${import.meta.process.env}/stop/${tripId}/stops`, {
+        return fetch(`http://13.202.224.27:3000/api/stop/${tripId}/stops`, {
           method: 'POST',
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
           body: JSON.stringify(stopPayload)
@@ -249,7 +249,7 @@ function NewTrip() {
             stopId: firstStopId,
             tripId: tripId,
           };
-          return fetch(`${import.meta.process.env}/activity/${tripId}/stops/${firstStopId}/activities`, {
+          return fetch(`${import.meta.process.env.VITE_BACKEND_URL}/activity/${tripId}/stops/${firstStopId}/activities`, {
             method: 'POST',
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify(activityPayload)
@@ -292,7 +292,7 @@ function NewTrip() {
     };
 
     try {
-      const response = await fetch(`${import.meta.process.env}/budget/${tripId}/addBudget`, {
+      const response = await fetch(`http://13.202.224.27:3000/api/budget/${tripId}/addBudget`, {
         method: 'POST',
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify(budgetPayload)

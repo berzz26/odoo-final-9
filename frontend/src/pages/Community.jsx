@@ -21,7 +21,7 @@ export default function Community() {
                     return;
                 }
 
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/community`, {
+                const response = await fetch(`http://13.202.224.27:3000/api/community`, {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${token}`,

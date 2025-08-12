@@ -88,23 +88,23 @@ const Dashboard = () => {
       if (token) {
         try {
           // Check authentication
-          const authResponse = await fetch('http://192.168.103.71:3000/api/auth/me', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            }
-          });
+         const authResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/me`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  });
 
           if (authResponse.ok) {
             setIsAuth(true);
 
             // Fetch trips after successful authentication
-            const tripsResponse = await fetch('http://192.168.103.71:3000/api/trips', {
-              headers: {
-                'Authorization': `Bearer ${token}`
-              }
-            });
+            const tripsResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
 
             if (!tripsResponse.ok) {
               throw new Error('Failed to fetch trips');
