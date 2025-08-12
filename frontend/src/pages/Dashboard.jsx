@@ -251,6 +251,15 @@ const Dashboard = () => {
   };
 
   return (
+
+    <div className="bg-[#FCEFCB] min-h-screen w-screen text-[#EAECEE] font-sans">
+      <div className="p-4 md:p-8 space-y-8 container mx-auto max-w-6xl">
+        <div className="bg-[#2D3039] border border-[#4A4E5A] rounded-lg p-10 md:p-12 flex flex-col items-center justify-center text-center">
+          <h2 className="text-4xl md:text-6xl text-white font-bold tracking-tight" style={{ fontFamily: '"Caveat", cursive' }}>
+            Plan Your Next Adventure 
+          </h2>
+          <p className="text-gray-400 mt-4 text-lg italic">Your journey begins here.</p>
+
     <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen text-amber-900 font-sans">
       <div className="min-h-screen flex flex-col items-center justify-start">
         <div className="w-full max-w-screen px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-8 mx-auto">
@@ -341,5 +350,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
 export default Dashboard;

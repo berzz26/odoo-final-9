@@ -117,30 +117,30 @@ const Signup = () => {
             <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" />
             <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" required />
           </div>
+        </CardContent>
+        <CardFooter className="flex justify-end gap-3 p-6">
+          <Button className="bg-[#A86523] text-[#FCEFCB] hover:bg-[#A86523]/90" onClick={handleUpdateProfile}>Save Profile</Button>
+          <Button className="bg-red-600 text-white hover:bg-red-600/90" onClick={handleLogout}>Logout</Button>
+        </CardFooter>
+      </Card>
 
-          {/* Error Message Display */}
-          {error && <p className="text-red-500 text-center">{error}</p>}
-
-          {/* Submit Button */}
-          <div className="text-center pt-4">
-            <button
-              type="submit"
-              className="bg-[#A86523] text-[#FCEFCB] rounded-full px-10 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 font-semibold disabled:bg-gray-500 disabled:cursor-not-allowed"
-              disabled={loading}
-            >
-              {loading ? 'Registering...' : 'Register User'}
-            </button>
+      <Card className="w-full max-w-6xl shadow-lg text-center bg-[#FAD59A] border border-[#A86523] text-[#A86523]">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold">Pre-Planned Trips</CardTitle>
+          <CardDescription className="text-[#A86523]/90">View and manage your upcoming trips.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div>
+            {categorizedTrips.upcoming.length > 0 ? (
+              categorizedTrips.upcoming.map((trip) => (
+                <TripCard key={trip.id} trip={trip} onDelete={handleTripDelete} />
+              ))
+            ) : (
+              <p className="text-[#A86523]/90">No upcoming trips.</p>
+            )}
           </div>
-
-          {/* Link to Login Page */}
-          <p className="text-center text-sm text-[#A86523]/90 pt-4">
-            Already have an account?{' '}
-            <Link to="/login" className="font-semibold text-[#A86523] hover:underline">
-              Log In
-            </Link>
-          </p>
-        </form>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
