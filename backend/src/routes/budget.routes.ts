@@ -14,7 +14,7 @@ const router = Router({ mergeParams: true }); // Enable merging params from pare
 
 // Routes for a budget tied to a specific trip.
 router.get("/:tripId/budget", authenticate, getBudgetByTripId);
-router.post("/:tripId/budget", authenticate, validate(budgetSchema), createBudget);
+router.post("/:tripId/addBudget", authenticate, validate(budgetSchema), createBudget);
 router.put("/:tripId/budget", authenticate, validate(budgetSchema), updateBudget);
 router.delete("/:tripId/budget", authenticate, deleteBudget);
 

@@ -60,14 +60,14 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[#1E212B] min-h-screen w-screen text-[#EAECEE] font-sans flex items-center justify-center p-4">
+    <div className="bg-[#FCEFCB] min-h-screen w-screen text-[#A86523] font-sans flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center mb-6">Login Screen</h1>
+        <h1 className="text-3xl font-bold text-center mb-6 text-[#A86523]">Login Page</h1>
         
-        <form onSubmit={handleSubmit} className="bg-[#2D3039] border-2 border-[#4A4E5A] rounded-lg p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-[#FAD59A] border-2 border-[#A86523] rounded-lg p-8 space-y-6">
           
           <div className="flex justify-center">
-            <div className="w-24 h-24 rounded-full bg-[#1E212B] border-2 border-dashed border-[#4A4E5A] flex items-center justify-center text-gray-400">
+            <div className="w-24 h-24 rounded-full bg-[#FCEFCB] border-2 border-dashed border-[#A86523] flex items-center justify-center text-[#A86523]/80">
               Photo
             </div>
           </div>
@@ -80,7 +80,7 @@ const Login = () => {
                 placeholder="Email Address" 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
-                className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" 
+                className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" 
                 required 
               />
             </div>
@@ -91,7 +91,7 @@ const Login = () => {
                 placeholder="Password" 
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
-                className="w-full bg-[#1E212B] p-3 rounded-lg border-2 border-[#4A4E5A] focus:outline-none focus:border-[#8338EC]" 
+                className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" 
                 required 
               />
             </div>
@@ -101,16 +101,16 @@ const Login = () => {
             <div className="text-center pt-4">
               <button 
                 type="submit" 
-                className="w-full bg-[#8338EC] text-white rounded-full px-8 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 font-semibold disabled:bg-gray-500 disabled:cursor-not-allowed" 
+                className="w-full bg-[#A86523] text-[#FCEFCB] rounded-full px-8 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 font-semibold disabled:bg-gray-500 disabled:cursor-not-allowed" 
                 disabled={loading}
               >
-                {loading ? 'Logging in...' : 'Login Button'}
+                {loading ? 'Logging in...' : 'Login'}
               </button>
             </div>
 
-            <p className="text-center text-sm text-gray-400 pt-4">
+            <p className="text-center text-sm text-[#A86523]/90 pt-4">
               Don't have an account?{' '}
-              <Link to="/signup" className="font-semibold text-[#8338EC] hover:underline">
+              <Link to="/signup" className="font-semibold text-[#A86523] hover:underline">
                 Sign Up
               </Link>
             </p>
@@ -120,5 +120,6 @@ const Login = () => {
     </div>
   );
 };
+
 
 export default Login;

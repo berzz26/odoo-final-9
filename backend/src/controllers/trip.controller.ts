@@ -74,9 +74,12 @@ export const updateTrip = async (req: Request, res: Response) => {
  */
 export const deleteTrip = async (req: Request, res: Response) => {
   try {
+
     await tripService.deleteTrip(req.params.id);
+
     res.status(204).send(); // 204 No Content for successful deletion
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Failed to delete trip' });
   }
 };
@@ -84,8 +87,8 @@ export const deleteTrip = async (req: Request, res: Response) => {
 export const getSpecificTrip = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    
-    
+
+
     const trip = await tripService.getSpecificTrip(id);
     res.status(200).json(trip);
   } catch (error: any) {

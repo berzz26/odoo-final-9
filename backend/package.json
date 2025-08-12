@@ -29,6 +29,7 @@
     "seed": "node --loader ts-node/esm prisma/seed.ts"
   },
   "dependencies": {
+    "@langchain/google-genai": "^0.2.16",
     "@prisma/client": "^6.13.0",
     "@supabase/supabase-js": "^2.54.0",
     "bcrypt": "^6.0.0",
@@ -37,6 +38,7 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "langchain": "^0.3.30",
     "multer": "^2.0.2",
     "prettier": "^3.6.2",
     "zod": "^4.0.17"

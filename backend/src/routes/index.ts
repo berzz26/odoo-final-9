@@ -5,7 +5,8 @@ import stopRoutes from "./stop.routes.js";
 import activityRoutes from "./activity.routes.js";
 import budgetRoutes from "./budget.routes.js";
 import uploadRoutes from "./upload.routes.js";
-
+import communityRoutes from "./community.routes.js"
+import chatRoutes from "./chat.route.js"
 const router = Router();
 
 // Routes for user authentication (e.g., /auth/login, /auth/signup)
@@ -19,9 +20,13 @@ router.use("/trips", tripRoutes);
 // These routes are nested under trips and will use the tripId as a parameter.
 router.use("/stop", stopRoutes);
 router.use("/activity", activityRoutes);
-router.use("/trips", budgetRoutes);
+router.use("/budget", budgetRoutes);
 
 // Routes for file uploads (e.g., /upload/avatar)
 router.use("/upload", uploadRoutes);
 
+router.use("/community", communityRoutes)
+
+
+router.use("/chat", chatRoutes)
 export default router;
