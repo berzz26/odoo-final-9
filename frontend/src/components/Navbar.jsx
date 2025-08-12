@@ -74,6 +74,7 @@ export default function Navbar() {
         </Link>
 
         <div className="ml-auto flex items-center gap-4">
+          <Link>Community</Link>
           {/* My Trips dropdown - only when logged in */}
           {!isLoading && isLoggedIn && (
             <DropdownMenu>
@@ -116,6 +117,7 @@ export default function Navbar() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            
           )}
 
           {/* Avatar if logged in, or sign up/login links if not */}
@@ -132,6 +134,7 @@ export default function Navbar() {
                 </AvatarFallback>
               </Avatar>
             </Link>
+            
           ) : (
             !isLoading && (
               <div className="flex items-center gap-3">
