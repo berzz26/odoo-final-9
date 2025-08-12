@@ -285,32 +285,7 @@ const Dashboard = () => {
           </Carousel>
         </div>
 
-        {/* Search and Filter Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
-          <div className="flex flex-col md:flex-row items-stretch gap-4">
-            <div className="relative flex-grow">
-              <svg className="absolute left-3 top-3 h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search destinations..."
-                className="w-full pl-10 pr-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 placeholder-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all"
-              />
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button className="px-6 py-3 !bg-amber-100 border border-amber-200 rounded-xl text-amber-800 hover:bg-amber-200 hover:border-amber-300 transition-all font-medium">
-                Group by
-              </button>
-              <button className="px-6 py-3 !bg-amber-100 border border-amber-200 rounded-xl text-amber-800 hover:bg-amber-200 hover:border-amber-300 transition-all font-medium">
-                Filter
-              </button>
-              <button className="px-6 py-3 !bg-amber-100 border border-amber-200 rounded-xl text-amber-800 hover:bg-amber-200 hover:border-amber-300 transition-all font-medium">
-                Sort by
-              </button>
-            </div>
-          </div>
-        </div>
+      
 
         {/* Popular Regional Selections */}
         <div className="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
