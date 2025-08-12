@@ -9,6 +9,7 @@ import TripItenary from "./pages/TripItenary";
 import Triplisting from "./pages/Triplisting";
 import Profile from "./pages/Profile";
 import Community from "./pages/Community";
+import TripPage from "./pages/TripPage";
 
 
 function Shell() {
@@ -30,6 +31,7 @@ export default function App() {
     <Routes>
       <Route element={<Shell />}>
         <Route index element={<Dashboard />} />
+        <Route path="/trip/:id" element={<TripPage />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="/newtrip" element={<NewTrip />} />
         <Route path="/itenary-section" element={<ItenarySection/>}/>

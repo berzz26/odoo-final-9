@@ -77,7 +77,7 @@ export default function TripItineraryPage() {
         <div className="bg-gray-50 min-h-screen p-4 sm:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto">
                
-                <Link to="/" className="inline-flex items-center gap-2 text-blue-600 hover:underline mb-6">
+                <Link to="/itenary-section" className="inline-flex items-center gap-2 text-blue-600 hover:underline mb-6">
                     <ArrowLeft size={16} />
                     Back to All Trips
                 </Link>
