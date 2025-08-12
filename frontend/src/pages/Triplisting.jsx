@@ -31,7 +31,7 @@ const TripCard = ({ trip }) => {
       <div className="p-6">
         <h3
           className="text-2xl font-bold text-amber-900 mb-3"
-          style={{ fontFamily: "'Playfair Display', serif" }}
+         
         >
           {trip.name}
         </h3>
@@ -43,7 +43,7 @@ const TripCard = ({ trip }) => {
         </p>
         <div
           className="flex justify-between text-sm text-amber-500 mb-3"
-          style={{ fontFamily: "'Merriweather', serif" }}
+          
         >
           <span>{formattedStartDate}</span>
           <span>—</span>
@@ -51,7 +51,7 @@ const TripCard = ({ trip }) => {
         </div>
         <div
           className="text-sm text-amber-600 truncate"
-          style={{ fontFamily: "'Merriweather', serif" }}
+          
         >
           {trip.stops?.map(stop => stop.city).join(", ") || "No stops specified"}
         </div>
@@ -105,11 +105,11 @@ const TripListing = () => {
     return { ongoing, upcoming, completed };
   }, [trips]);
 
-  if (loading) return <div className="text-center text-amber-600 p-10" style={{ fontFamily: "'Merriweather', serif" }}>Loading trips...</div>;
-  if (error) return <div className="text-center text-red-600 p-10" style={{ fontFamily: "'Merriweather', serif" }}>Error: {error}</div>;
+  if (loading) return <div className="text-center text-amber-600 p-10" >Loading trips...</div>;
+  if (error) return <div className="text-center text-red-600 p-10" >Error: {error}</div>;
 
   return (
-    <div className="bg-[#FDF6E3] min-h-screen w-screen text-amber-900 font-serif p-6 md:p-10">
+    <div className="bg-[#FDF6E3] min-h-screen w-screen text-amber-900  p-6 md:p-10">
       <div className="max-w-6xl mx-auto space-y-12">
 
         {/* Filter Bar */}
@@ -119,14 +119,14 @@ const TripListing = () => {
             placeholder="Search trips..."
             className="flex-grow p-3 rounded-lg border border-amber-300 bg-amber-50 placeholder-amber-600
               focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition
-              font-serif text-amber-900"
-            style={{ fontFamily: "'Merriweather', serif" }}
+             text-amber-900"
+            
           />
           {['Group by', 'Filter', 'Sort by'].map((label) => (
             <button
               key={label}
-              className="px-6 py-3 bg-amber-100 text-amber-900 rounded-lg font-semibold hover:bg-amber-200 transition"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              className="px-6 py-3 !bg-amber-100 text-amber-900 rounded-lg font-semibold hover:bg-amber-200 transition"
+             
             >
               {label}
             </button>
@@ -140,7 +140,7 @@ const TripListing = () => {
           <section>
             <h2
               className="text-4xl font-bold text-amber-700 mb-6"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+             
             >
               Ongoing
             </h2>
@@ -149,7 +149,7 @@ const TripListing = () => {
                 {categorizedTrips.ongoing.map(trip => <TripCard key={trip.id} trip={trip} />)}
               </div>
             ) : (
-              <p className="text-amber-600 italic font-serif">No ongoing trips.</p>
+              <p className="text-amber-600 italic">No ongoing trips.</p>
             )}
           </section>
 
@@ -157,7 +157,7 @@ const TripListing = () => {
           <section>
             <h2
               className="text-4xl font-bold text-amber-700 mb-6"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+             
             >
               Upcoming
             </h2>
@@ -166,7 +166,7 @@ const TripListing = () => {
                 {categorizedTrips.upcoming.map(trip => <TripCard key={trip.id} trip={trip} />)}
               </div>
             ) : (
-              <p className="text-amber-600 italic font-serif">No upcoming trips.</p>
+              <p className="text-amber-600 italic ">No upcoming trips.</p>
             )}
           </section>
 
@@ -174,7 +174,7 @@ const TripListing = () => {
           <section>
             <h2
               className="text-4xl font-bold text-amber-700 mb-6"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+             
             >
               Completed
             </h2>
@@ -183,7 +183,7 @@ const TripListing = () => {
                 {categorizedTrips.completed.map(trip => <TripCard key={trip.id} trip={trip} />)}
               </div>
             ) : (
-              <p className="text-amber-600 italic font-serif">No completed trips yet.</p>
+              <p className="text-amber-600 italic ">No completed trips yet.</p>
             )}
           </section>
 
