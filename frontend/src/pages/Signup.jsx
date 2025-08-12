@@ -9,7 +9,7 @@ const Signup = () => {
     email: '',
     password: '',
     country: '',
-    
+
   });
 
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -45,7 +45,7 @@ const Signup = () => {
           email: formData.email,
           password: formData.password,
           country: formData.country,
-       
+
         }),
       });
 
@@ -73,8 +73,7 @@ const Signup = () => {
       }
 
       // Step 3: Store token and redirect
-      const expirationTime = Date.now() + 7 * 24 * 60 * 60 * 1000;
-      localStorage.setItem('authToken', JSON.stringify({ token, expires: expirationTime }));
+      localStorage.setItem('authToken', token);
 
       alert('Registration successful!');
       navigate('/');
@@ -88,7 +87,7 @@ const Signup = () => {
   };
 
 
-   return (
+  return (
     <div className="bg-[#FCEFCB] min-h-screen w-screen text-[#A86523] font-sans flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
         <h1 className="text-3xl font-bold text-center mb-6 text-[#A86523]">SignUp Page</h1>
