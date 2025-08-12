@@ -32,6 +32,7 @@ export const createTrip = async (tripData: any, userId: string) => {
       startDate: new Date(tripData.startDate),
       endDate: new Date(tripData.endDate),
       coverPhoto: tripData.coverPhoto ?? null,
+      isPublic: tripData.isPublic ?? true
     },
   });
 };
