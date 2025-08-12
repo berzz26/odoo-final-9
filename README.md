@@ -1,4 +1,4 @@
-# GlobalTrotter – Travel Planning App
+# GlobeTrotter – Travel Planning App
 
   
 
