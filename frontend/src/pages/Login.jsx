@@ -67,9 +67,9 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="bg-[#FAD59A] border-2 border-[#A86523] rounded-lg p-8 space-y-6">
           
           <div className="flex justify-center">
-            <div className="w-24 h-24 rounded-full bg-[#FCEFCB] border-2 border-dashed border-[#A86523] flex items-center justify-center text-[#A86523]/80">
+            {/* <div className="w-24 h-24 rounded-full bg-[#FCEFCB] border-2 border-dashed border-[#A86523] flex items-center justify-center text-[#A86523]/80">
               Photo
-            </div>
+            </div> */}
           </div>
 
           <div className="max-w-sm mx-auto space-y-6">

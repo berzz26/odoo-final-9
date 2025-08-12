@@ -50,7 +50,7 @@ const initialState = {
   activities: [], // Will now hold full activity objects
   currentActivity: initialActivityState,
   budget: initialBudgetState,
-  isPublic: false, // Add the new boolean state here
+  isPublic: true, // Add the new boolean state here
 };
 
 
