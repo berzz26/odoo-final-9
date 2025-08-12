@@ -162,6 +162,7 @@ function NewTrip() {
       coverPhoto: tripData.coverPhoto || undefined,
       isPublic: tripData.isPublic, // Include the new isPublic field
     };
+    console.log(tripPayload);
 
     try {
       const response = await fetch("http://192.168.103.71:3000/api/trips", {
@@ -200,7 +201,7 @@ function NewTrip() {
           endDate: stop.endDate,
           tripId: tripId,
         };
-        return fetch(`${import.meta.process.env}/stop/${tripId}/stops`, {
+        return fetch(`${import.meta.env.VITE_BACKEND_URL}/stop/${tripId}/stops`, {
           method: 'POST',
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
           body: JSON.stringify(stopPayload)
@@ -249,7 +250,7 @@ function NewTrip() {
             stopId: firstStopId,
             tripId: tripId,
           };
-          return fetch(`${import.meta.process.env}/activity/${tripId}/stops/${firstStopId}/activities`, {
+          return fetch(`${import.meta.env.VITE_BACKEND_URL}/activity/${tripId}/stops/${firstStopId}/activities`, {
             method: 'POST',
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify(activityPayload)
@@ -292,7 +293,7 @@ function NewTrip() {
     };
 
     try {
-      const response = await fetch(`${import.meta.process.env}/budget/${tripId}/addBudget`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/budget/${tripId}/addBudget`, {
         method: 'POST',
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify(budgetPayload)
