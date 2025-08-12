@@ -164,12 +164,13 @@ function NewTrip() {
     };
     console.log(tripPayload);
 
-   try {
-  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-    body: JSON.stringify(tripPayload),
-  });
+    try {
+      // Use a consistent API base URL
+      const response = await fetch(`http://13.202.224.27:3000/api/trips`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify(tripPayload),
+      });
 
       if (!response.ok) throw new Error((await response.json()).message || "Failed to create trip.");
 
@@ -250,8 +251,8 @@ function NewTrip() {
             stopId: firstStopId,
             tripId: tripId,
           };
-          return fetch(`${import.meta.env.VITE_BACKEND_URL}/activity/${tripId}/stops/${firstStopId}/activities`, {
-          return fetch(`${import.meta.process.env.VITE_BACKEND_URL}/activity/${tripId}/stops/${firstStopId}/activities`, {
+          // Corrected URL
+          return fetch(`http://13.202.224.27:3000/api/activity/${tripId}/stops/${firstStopId}/activities`, {
             method: 'POST',
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify(activityPayload)
@@ -294,6 +295,7 @@ function NewTrip() {
     };
 
     try {
+      // Corrected URL
       const response = await fetch(`http://13.202.224.27:3000/api/budget/${tripId}/addBudget`, {
         method: 'POST',
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
