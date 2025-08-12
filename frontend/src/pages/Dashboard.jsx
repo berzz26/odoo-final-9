@@ -186,21 +186,6 @@ const Dashboard = () => {
           <button className="w-full md:w-auto !bg-[#FAD59A] border border-[#4A4E5A] rounded-lg px-6 py-3 hover:border-[#000000] transition-colors text-black">Sort by</button>
         </div>
 
-        {/* <div>
-          <h3 className="text-2xl font-bold mb-4 text-black">Popular Regional Selections</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {spots.length > 0 ? (
-              spots.map(spot => (
-                <div key={spot.id} className="p-4 border rounded-md shadow-sm">
-                  <h4 className="font-semibold">{spot.city}</h4>
-                  <p className="text-sm text-gray-500">{spot.country}</p>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-600">No spots found.</p>
-            )}
-          </div>
-        </div> */}
 
         <div>
           <h3 className="text-2xl font-bold mb-4 text-black">
