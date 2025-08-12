@@ -74,7 +74,7 @@ export default function Navbar() {
         </Link>
 
         <div className="ml-auto flex items-center gap-4">
-          <Link>Community</Link>
+          <Link to="/community" className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-200 rounded-xl !text-amber-900 font-medium transition-all duration-200 hover:from-amber-200 hover:to-orange-200 hover:border-amber-300 hover:scale-105 shadow-sm">Community</Link>
           {/* My Trips dropdown - only when logged in */}
           {!isLoading && isLoggedIn && (
             <DropdownMenu>
