@@ -73,8 +73,8 @@ const Signup = () => {
       }
 
       // Step 3: Store token and redirect
-      const expirationTime = Date.now() + 7 * 24 * 60 * 60 * 1000;
-      localStorage.setItem('authToken', JSON.stringify({ token, expires: expirationTime }));
+    //   const expirationTime = Date.now() + 7 * 24 * 60 * 60 * 1000;
+    //   localStorage.setItem('authToken', JSON.stringify({ token, expires: expirationTime }));
 
       alert('Registration successful!');
       navigate('/');
@@ -88,60 +88,79 @@ const Signup = () => {
   };
 
 
-   return (
-    <div className="bg-[#FCEFCB] min-h-screen w-screen text-[#A86523] font-sans flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center mb-6 text-[#A86523]">SignUp Page</h1>
-
-        <form onSubmit={handleSubmit} className="bg-[#FAD59A] border-2 border-[#A86523] rounded-lg p-8 space-y-6">
-
-          {/* Avatar Upload Section */}
-          <div className="flex justify-center">
-            <label htmlFor="avatar-upload" className="cursor-pointer">
-              <div className="w-32 h-32 rounded-full bg-[#FCEFCB] border-2 border-dashed border-[#A86523] flex items-center justify-center text-[#A86523]/80 overflow-hidden">
-                {avatarPreview ? (
-                  <img src={avatarPreview} alt="Avatar Preview" className="w-full h-full object-cover" />
-                ) : (
-                  <span>Photo</span>
-                )}
+return (
+    <div className="flex flex-col items-center w-screen min-h-screen bg-[#FCEFCB] p-4 sm:p-6 gap-6 font-sans">
+      <Card className="w-full max-w-6xl shadow-lg bg-[#FAD59A] border border-[#A86523] text-[#A86523]">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold">User Profile</CardTitle>
+          <CardDescription className="text-[#A86523]/90">View and manage your account details.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+            <div className="flex-shrink-0 text-center">
+              <Label htmlFor="avatar-upload" className="cursor-pointer">
+                <Avatar className="h-40 w-40 sm:h-48 sm:w-48 border-2 border-[#A86523]">
+                  <AvatarImage src={avatarUrl} alt="User Avatar" />
+                  <AvatarFallback className="text-4xl bg-[#FCEFCB] text-[#A86523]">
+                    {user.email?.[0]?.toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
+              </Label>
+              <Input
+                id="avatar-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarChange}
+              />
+            </div>
+            <div className="w-full">
+              <h1 className="text-2xl font-semibold mb-2">Welcome, {name}!</h1>
+              <p className="italic text-[#A86523]/80 mb-6">Here is your profile information.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-base font-semibold">Name</Label>
+                  <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-[#FCEFCB] border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-base font-semibold">Email</Label>
+                  <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-[#FCEFCB] border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="country" className="text-base font-semibold">Country</Label>
+                  <Input id="country" value={country} onChange={(e) => setCountry(e.target.value)} className="w-full bg-[#FCEFCB] border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="city" className="text-base font-semibold">City</Label>
+                  <Input id="city" value={city} onChange={(e) => setCity(e.target.value)} className="w-full bg-[#FCEFCB] border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
+                </div>
               </div>
-            </label>
-            <input id="avatar-upload" type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+            </div>
           </div>
+        </CardContent>
+        <CardFooter className="flex justify-end gap-3 p-6">
+          <Button className="bg-[#A86523] text-[#FCEFCB] hover:bg-[#A86523]/90" onClick={handleUpdateProfile}>Save Profile</Button>
+          <Button className="bg-red-600 text-white hover:bg-red-600/90" onClick={handleLogout}>Logout</Button>
+        </CardFooter>
+      </Card>
 
-          {/* Form Fields Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" required />
-            <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" required />
-            <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" required />
-            <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" />
-            <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleChange} className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" />
-            <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" required />
+      <Card className="w-full max-w-6xl shadow-lg text-center bg-[#FAD59A] border border-[#A86523] text-[#A86523]">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold">Pre-Planned Trips</CardTitle>
+          <CardDescription className="text-[#A86523]/90">View and manage your upcoming trips.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div>
+            {categorizedTrips.upcoming.length > 0 ? (
+              categorizedTrips.upcoming.map((trip) => (
+                <TripCard key={trip.id} trip={trip} onDelete={handleTripDelete} />
+              ))
+            ) : (
+              <p className="text-[#A86523]/90">No upcoming trips.</p>
+            )}
           </div>
-
-          {/* Error Message Display */}
-          {error && <p className="text-red-500 text-center">{error}</p>}
-
-          {/* Submit Button */}
-          <div className="text-center pt-4">
-            <button
-              type="submit"
-              className="bg-[#A86523] text-[#FCEFCB] rounded-full px-10 py-3 shadow-lg hover:bg-opacity-90 transition-transform hover:scale-105 font-semibold disabled:bg-gray-500 disabled:cursor-not-allowed"
-              disabled={loading}
-            >
-              {loading ? 'Registering...' : 'Register User'}
-            </button>
-          </div>
-
-          {/* Link to Login Page */}
-          <p className="text-center text-sm text-[#A86523]/90 pt-4">
-            Already have an account?{' '}
-            <Link to="/login" className="font-semibold text-[#A86523] hover:underline">
-              Log In
-            </Link>
-          </p>
-        </form>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
