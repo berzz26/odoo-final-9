@@ -237,80 +237,79 @@ export default function Profile() {
             </div>
         );
     }
-
 return (
-    <div className="flex flex-col items-center w-screen min-h-screen bg-[#FCEFCB] p-4 sm:p-6 gap-6 font-sans">
-      <Card className="w-full max-w-6xl shadow-lg bg-[#FAD59A] border border-[#A86523] text-[#A86523]">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold">User Profile</CardTitle>
-          <CardDescription className="text-[#A86523]/90">View and manage your account details.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-            <div className="flex-shrink-0 text-center">
-              <Label htmlFor="avatar-upload" className="cursor-pointer">
-                <Avatar className="h-40 w-40 sm:h-48 sm:w-48 border-2 border-[#A86523]">
-                  <AvatarImage src={avatarUrl} alt="User Avatar" />
-                  <AvatarFallback className="text-4xl bg-[#FCEFCB] text-[#A86523]">
-                    {user.email?.[0]?.toUpperCase() || "U"}
-                  </AvatarFallback>
-                </Avatar>
-              </Label>
-              <Input
-                id="avatar-upload"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleAvatarChange}
-              />
-            </div>
-            <div className="w-full">
-              <h1 className="text-2xl font-semibold mb-2">Welcome, {name}!</h1>
-              <p className="italic text-[#A86523]/80 mb-6">Here is your profile information.</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-base font-semibold">Name</Label>
-                  <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-[#FCEFCB] border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-base font-semibold">Email</Label>
-                  <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-[#FCEFCB] border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="country" className="text-base font-semibold">Country</Label>
-                  <Input id="country" value={country} onChange={(e) => setCountry(e.target.value)} className="w-full bg-[#FCEFCB] border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="city" className="text-base font-semibold">City</Label>
-                  <Input id="city" value={city} onChange={(e) => setCity(e.target.value)} className="w-full bg-[#FCEFCB] border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
-                </div>
+  <div className="flex flex-col items-center w-screen min-h-screen bg-white p-4 sm:p-6 gap-6 font-sans">
+    <Card className="w-full max-w-6xl shadow-lg bg-[#FCEFCB] border border-[#FAD59A] text-[#A86523]">
+      <CardHeader className="text-center">
+        <CardTitle className="text-3xl font-bold">User Profile</CardTitle>
+        <CardDescription className="text-[#A86523]/90">View and manage your account details.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+          <div className="flex-shrink-0 text-center">
+            <Label htmlFor="avatar-upload" className="cursor-pointer">
+              <Avatar className="h-40 w-40 sm:h-48 sm:w-48 border-2 border-[#A86523]">
+                <AvatarImage src={avatarUrl} alt="User Avatar" />
+                <AvatarFallback className="text-4xl bg-white text-[#A86523]">
+                  {user.email?.[0]?.toUpperCase() || "U"}
+                </AvatarFallback>
+              </Avatar>
+            </Label>
+            <Input
+              id="avatar-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarChange}
+            />
+          </div>
+          <div className="w-full">
+            <h1 className="text-2xl font-semibold mb-2">Welcome, {name}!</h1>
+            <p className="italic text-[#A86523]/80 mb-6">Here is your profile information.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-base font-semibold">Name</Label>
+                <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-white border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-base font-semibold">Email</Label>
+                <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-white border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="country" className="text-base font-semibold">Country</Label>
+                <Input id="country" value={country} onChange={(e) => setCountry(e.target.value)} className="w-full bg-white border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="city" className="text-base font-semibold">City</Label>
+                <Input id="city" value={city} onChange={(e) => setCity(e.target.value)} className="w-full bg-white border border-[#A86523]/50 focus:border-[#A86523] text-[#A86523]" />
               </div>
             </div>
           </div>
-        </CardContent>
-        <CardFooter className="flex justify-end gap-3 p-6">
-          <Button className="bg-[#A86523] text-[#FCEFCB] hover:bg-[#A86523]/90" onClick={handleUpdateProfile}>Save Profile</Button>
-          <Button className="bg-red-600 text-white hover:bg-red-600/90" onClick={handleLogout}>Logout</Button>
-        </CardFooter>
-      </Card>
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-end gap-3 p-6">
+        <Button className="bg-[#A86523] text-white hover:bg-[#A86523]/90" onClick={handleUpdateProfile}>Save Profile</Button>
+        <Button className="bg-red-600 text-white hover:bg-red-600/90" onClick={handleLogout}>Logout</Button>
+      </CardFooter>
+    </Card>
 
-      <Card className="w-full max-w-6xl shadow-lg text-center bg-[#FAD59A] border border-[#A86523] text-[#A86523]">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold">Pre-Planned Trips</CardTitle>
-          <CardDescription className="text-[#A86523]/90">View and manage your upcoming trips.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div>
-            {categorizedTrips.upcoming.length > 0 ? (
-              categorizedTrips.upcoming.map((trip) => (
-                <TripCard key={trip.id} trip={trip} onDelete={handleTripDelete} />
-              ))
-            ) : (
-              <p className="text-[#A86523]/90">No upcoming trips.</p>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+    <Card className="w-full max-w-6xl shadow-lg text-center bg-[#FCEFCB] border border-[#A86523] text-[#A86523]">
+      <CardHeader>
+        <CardTitle className="text-3xl font-bold">Pre-Planned Trips</CardTitle>
+        <CardDescription className="text-[#A86523]/90">View and manage your upcoming trips.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div>
+          {categorizedTrips.upcoming.length > 0 ? (
+            categorizedTrips.upcoming.map((trip) => (
+              <TripCard key={trip.id} trip={trip} onDelete={handleTripDelete} />
+            ))
+          ) : (
+            <p className="text-[#A86523]/90">No upcoming trips.</p>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+);
 }
