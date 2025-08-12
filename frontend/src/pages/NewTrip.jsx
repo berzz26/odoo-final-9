@@ -200,7 +200,7 @@ function NewTrip() {
           endDate: stop.endDate,
           tripId: tripId,
         };
-        return fetch(`http://192.168.103.71:3000/api/stop/${tripId}/stops`, {
+        return fetch(`${import.meta.process.env}/stop/${tripId}/stops`, {
           method: 'POST',
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
           body: JSON.stringify(stopPayload)
@@ -249,7 +249,7 @@ function NewTrip() {
             stopId: firstStopId,
             tripId: tripId,
           };
-          return fetch(`http://192.168.103.71:3000/api/activity/${tripId}/stops/${firstStopId}/activities`, {
+          return fetch(`${import.meta.process.env}/activity/${tripId}/stops/${firstStopId}/activities`, {
             method: 'POST',
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify(activityPayload)
@@ -292,7 +292,7 @@ function NewTrip() {
     };
 
     try {
-      const response = await fetch(`http://192.168.103.71:3000/api/budget/${tripId}/addBudget`, {
+      const response = await fetch(`${import.meta.process.env}/budget/${tripId}/addBudget`, {
         method: 'POST',
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify(budgetPayload)
