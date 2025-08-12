@@ -47,7 +47,7 @@ export default function ItenarySection() {
     }, []); 
 
     return (
-        <div className='flex min-h-screen w-screen bg-gray-50 p-6'>
+        <div className='flex min-h-screen w-screen bg-[#FCEFCB] p-6'>
             <div>
                 
                 <div className='text-4xl italic'>You have the following planned trips.</div>

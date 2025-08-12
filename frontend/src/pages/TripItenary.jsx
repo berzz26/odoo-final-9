@@ -73,7 +73,7 @@ export default function TripItineraryPage() {
     }
 
 return (
-    <div className="bg-[#FCEFCB] min-h-screen w-screen p-4 sm:p-6 lg:p-8 text-[#A86523] font-sans">
+    <div className="bg-[#FFFFFF] min-h-screen w-screen p-4 sm:p-6 lg:p-8 text-[#A86523] font-sans">
         <div className="max-w-7xl mx-auto">
             
             <Link to="/" className="inline-flex items-center gap-2 text-[#A86523] hover:underline mb-6 font-semibold">
@@ -139,7 +139,7 @@ return (
 
                 {/* --- Budget Section (Right/Side Column) --- */}
                 <aside className="lg:col-span-1">
-                    <Card className="sticky top-8 shadow-md bg-[#FAD59A] border border-[#A86523]/50 text-[#A86523]">
+                    <Card className="sticky top-8 shadow-md bg-[#FCEFCB] border border-[#A86523]/50 text-[#A86523]">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-3 text-2xl">
                                 <DollarSign className="text-green-700" />

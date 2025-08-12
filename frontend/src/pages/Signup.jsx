@@ -82,16 +82,16 @@ const Signup = () => {
     }
   };
 
-  return (
-    <div className="bg-[#FCEFCB] min-h-screen w-screen text-[#A86523] font-sans flex items-center justify-center p-4">
+return (
+    <div className="bg-white min-h-screen w-screen text-[#A86523] font-sans flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center mb-6 text-[#A86523]">SignUp Page</h1>
+        <h1 className="text-3xl font-bold text-center mb-6 text-[#A86523]">Sign Up Page</h1>
 
-        <form onSubmit={handleSubmit} className="bg-[#FAD59A] border-2 border-[#A86523] rounded-lg p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-[#FCEFCB] border-2 border-[#FAD59A] rounded-lg p-8 space-y-6 shadow-lg">
           {/* Avatar Upload */}
           <div className="flex justify-center">
             <label htmlFor="avatar-upload" className="cursor-pointer">
-              <div className="w-32 h-32 rounded-full bg-[#FCEFCB] border-2 border-dashed border-[#A86523] flex items-center justify-center text-[#A86523]/80 overflow-hidden">
+              <div className="w-32 h-32 rounded-full bg-white border-2 border-dashed border-[#A86523] flex items-center justify-center text-[#A86523]/80 overflow-hidden">
                 {avatarPreview ? (
                   <img src={avatarPreview} alt="Avatar Preview" className="w-full h-full object-cover" />
                 ) : (
@@ -110,7 +110,7 @@ const Signup = () => {
               placeholder="Full Name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
+              className="w-full bg-white p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
               required
             />
             <input
@@ -119,7 +119,7 @@ const Signup = () => {
               placeholder="Email Address"
               value={formData.email}
               onChange={handleChange}
-              className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
+              className="w-full bg-white p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
               required
             />
             <input
@@ -128,7 +128,7 @@ const Signup = () => {
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
+              className="w-full bg-white p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
               required
             />
             <input
@@ -137,7 +137,7 @@ const Signup = () => {
               placeholder="Phone Number"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
+              className="w-full bg-white p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
             />
             <input
               type="text"
@@ -145,7 +145,7 @@ const Signup = () => {
               placeholder="City"
               value={formData.city}
               onChange={handleChange}
-              className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
+              className="w-full bg-white p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
             />
             <input
               type="text"
@@ -153,7 +153,7 @@ const Signup = () => {
               placeholder="Country"
               value={formData.country}
               onChange={handleChange}
-              className="w-full bg-[#FCEFCB] p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
+              className="w-full bg-white p-3 rounded-lg border-2 border-[#A86523]/50 focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70"
               required
             />
           </div>
@@ -163,7 +163,7 @@ const Signup = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#A86523] text-[#FCEFCB] py-3 rounded-lg font-semibold hover:bg-[#A86523]/90 disabled:opacity-50"
+            className="w-full bg-[#A86523] text-white py-3 rounded-lg font-semibold hover:bg-[#A86523]/90 disabled:opacity-50"
           >
             {loading ? 'Registering...' : 'Sign Up'}
           </button>

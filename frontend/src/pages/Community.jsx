@@ -44,7 +44,7 @@ export default function Community() {
     }, [navigate]);
 
     return (
-        <div className="flex flex-col items-center w-screen bg-white p-6 gap-6">
+        <div className="flex flex-col items-center w-screen bg-[#FCEFCB] p-6 gap-6">
             {posts.map((trip) => (
                 <Link key={trip.id} to={`/trip/${trip.id}`} className="w-full hover:scale-101 transition">
                     <Card>
