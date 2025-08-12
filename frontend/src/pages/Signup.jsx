@@ -38,7 +38,7 @@ const Signup = () => {
 
     try {
       // Signup API call
-      const signupResponse = await fetch(`${import.meta.process.env.VITE_BAKEND_URL}`, {
+      const signupResponse = await fetch(`http://13.202.224.27:3000/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

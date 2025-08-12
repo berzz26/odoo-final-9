@@ -70,7 +70,7 @@ export default function Navbar() {
           style={{ fontFamily: '"Caveat", cursive' }}
         >
           <MapPin className="h-6 w-6 text-amber-600" />
-          GlobleTrotter
+          GlobeTrotter
         </Link>
 
         <div className="ml-auto flex items-center gap-4">
