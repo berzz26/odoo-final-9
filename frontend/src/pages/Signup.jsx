@@ -91,7 +91,7 @@ const Signup = () => {
    return (
     <div className="bg-[#FCEFCB] min-h-screen w-screen text-[#A86523] font-sans flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center mb-6 text-[#A86523]">Registration Screen</h1>
+        <h1 className="text-3xl font-bold text-center mb-6 text-[#A86523]">SignUp Page</h1>
 
         <form onSubmit={handleSubmit} className="bg-[#FAD59A] border-2 border-[#A86523] rounded-lg p-8 space-y-6">
 
