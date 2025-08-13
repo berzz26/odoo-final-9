@@ -11,7 +11,7 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0',   
+    host: '0.0.0.0',   // <-- allow external access
     port: 8080,  
-  },
+  }
 })
