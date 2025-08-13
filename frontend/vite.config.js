@@ -10,8 +10,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'), // <-- alias
     },
   },
-  server: {
-    host: '0.0.0.0',   // <-- allow external access
-    port: 8080,  
-  }
+ server: {
+    host: true, 
+    port: 8080, 
+    strictPort: true,
+    allowedHosts: [
+      'ec2-13-202-224-27.ap-south-1.compute.amazonaws.com'
+    ],
+  },
 })
