@@ -10,4 +10,8 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'), // <-- alias
     },
   },
+  server: {
+    host: '0.0.0.0',   
+    port: 8080,  
+  },
 })
