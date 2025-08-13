@@ -410,7 +410,7 @@ function NewTrip() {
   };
 
   return (
-    <section className="flex justify-center min-h-screen w-screen bg-[#FCEFCB] p-6">
+    <section className="flex justify-center min-h-screen w-screen bg-gray-50 p-6">
       <Card className="w-full max-w-3xl h-min p-8 shadow-lg flex flex-col rounded-3xl mx-auto">
         <CardHeader>
           <CardTitle className="text-3xl font-bold">
