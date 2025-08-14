@@ -61,7 +61,7 @@ const Dashboard = () => {
   // Function to fetch all spots
   const fetchAllSpots = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/stop/getAllStop`, {
+      const response = await fetch(`http://13.202.224.27:3000/api/stop/getAllStop`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
