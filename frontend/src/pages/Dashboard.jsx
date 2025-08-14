@@ -71,7 +71,7 @@ const Dashboard = () => {
     }
 
     try {
-        const response = await fetch(`http://13.202.224.27:3000/api/stop/getAllStop`, {
+        const response = await fetch(`/api/stop/getAllStop`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -99,7 +99,7 @@ useEffect(() => {
       if (token) {
         try {
           // Check authentication
-         const authResponse = await fetch(`http://13.202.224.27:3000/api/auth/me`, {
+         const authResponse = await fetch(`/api/auth/me`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ useEffect(() => {
             //fetch data after authentication completes
 
             // Fetch trips after successful authentication
-            const tripsResponse = await fetch(`http://13.202.224.27:3000/api/trips`, {
+            const tripsResponse = await fetch(`/api/trips`, {
               headers: {
                 'Authorization': `Bearer ${token}`
               }

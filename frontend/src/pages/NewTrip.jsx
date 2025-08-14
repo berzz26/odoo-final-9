@@ -166,7 +166,7 @@ function NewTrip() {
 
     try {
       // Use a consistent API base URL
-      const response = await fetch(`http://13.202.224.27:3000/api/trips`, {
+      const response = await fetch(`/api/trips`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify(tripPayload),
@@ -202,7 +202,7 @@ function NewTrip() {
           endDate: stop.endDate,
           tripId: tripId,
         };
-        return fetch(`http://13.202.224.27:3000/api/stop/${tripId}/stops`, {
+        return fetch(`/api/stop/${tripId}/stops`, {
           method: 'POST',
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
           body: JSON.stringify(stopPayload)
@@ -252,7 +252,7 @@ function NewTrip() {
             tripId: tripId,
           };
           // Corrected URL
-          return fetch(`http://13.202.224.27:3000/api/activity/${tripId}/stops/${firstStopId}/activities`, {
+          return fetch(`/api/activity/${tripId}/stops/${firstStopId}/activities`, {
             method: 'POST',
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
             body: JSON.stringify(activityPayload)
@@ -296,7 +296,7 @@ function NewTrip() {
 
     try {
       // Corrected URL
-      const response = await fetch(`http://13.202.224.27:3000/api/budget/${tripId}/addBudget`, {
+      const response = await fetch(`/api/budget/${tripId}/addBudget`, {
         method: 'POST',
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify(budgetPayload)

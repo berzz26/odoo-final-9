@@ -29,7 +29,7 @@ export default function TripPage() {
                     return;
                 }
 
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/community/${id}`, {
+                const response = await fetch(`/api/community/${id}`, {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -103,7 +103,7 @@ export default function TripPage() {
                 },
             };
 
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
+            const response = await fetch(`/api/trips`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

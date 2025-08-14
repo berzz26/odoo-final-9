@@ -29,7 +29,7 @@ function useAuthStatus() {
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/me`, {
+        const response = await fetch(`/api/auth/me`, {
     method: "GET",
     headers: { "Authorization": `Bearer ${authToken}` },
   });

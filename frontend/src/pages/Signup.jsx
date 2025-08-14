@@ -38,7 +38,7 @@ const Signup = () => {
 
     try {
       // Signup API call
-      const signupResponse = await fetch(`http://13.202.224.27:3000/api/auth/signup`, {
+      const signupResponse = await fetch(`/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -62,7 +62,7 @@ const Signup = () => {
         const avatarFormData = new FormData();
         avatarFormData.append('avatar', avatarFile);
 
-        const avatarResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/upload/avatar`, {
+        const avatarResponse = await fetch(`/api/upload/avatar`, {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${token}` },
     body: avatarFormData,

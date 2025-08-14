@@ -71,7 +71,7 @@ const TripListing = () => {
         const token = localStorage.getItem('authToken');
         if (!token) throw new Error('Authorization token not found. Please log in.');
 
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
+        const response = await fetch(`/api/trips`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

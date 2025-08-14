@@ -22,7 +22,7 @@ export default function ItenarySection() {
                 }
 
                
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
+                const response = await fetch(`/api/trips`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
@@ -62,7 +62,7 @@ export default function ItenarySection() {
                         <div className='flex flex-wrap gap-4'>
                             {trips.length > 0 ? (
                                 trips.map((t) => (
-                                    <Link key={t.id} to={`/trips/${t.id}`} className="block group">
+                                    <Link key={t.id} to={`/api/trips/${t.id}`} className="block group">
                                         <Card className="w-80 h-80 transition-transform group-hover:scale-105">
                                             <CardHeader>
                                                 <img

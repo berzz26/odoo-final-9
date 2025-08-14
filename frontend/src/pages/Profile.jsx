@@ -64,7 +64,7 @@ export default function Profile() {
                 const avatarFormData = new FormData();
                 avatarFormData.append("avatar", avatarFile);
 
-                const avatarResponse = await fetch(`${import.meta.process.env.VITE_BACKEND_URL}/upload/avatar`, {
+                const avatarResponse = await fetch(`/api/upload/avatar`, {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` },
                     body: avatarFormData,
@@ -84,7 +84,7 @@ export default function Profile() {
             }
 
 
-            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/me`, {
+            const res = await fetch(`/api/auth/me`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export default function Profile() {
             const token = localStorage.getItem("authToken");
             if (!token) throw new Error("No auth token");
 
-            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips/${tripId}`, {
+            const res = await fetch(`/api/trips/${tripId}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -138,7 +138,7 @@ export default function Profile() {
                     throw new Error("Authorization token not found. Please log in.");
                 }
 
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
+                const response = await fetch(`/api/trips`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -194,7 +194,7 @@ export default function Profile() {
             }
 
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/me`, {
+                const response = await fetch(`/api/auth/me`, {
     method: "GET",
     headers: { Authorization: `Bearer ${authToken}` },
 });

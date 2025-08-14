@@ -31,7 +31,7 @@ export default function TripItineraryPage() {
                 }
                 
               
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips/${tripId}`, {
+                const response = await fetch(`/api/trips/${tripId}`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 });
 

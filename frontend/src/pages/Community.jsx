@@ -21,7 +21,7 @@ export default function Community() {
                     return;
                 }
 
-                const response = await fetch(`http://13.202.224.27:3000/api/community`, {
+                const response = await fetch(`/api/community`, {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ export default function Community() {
     return (
         <div className="flex flex-col items-center w-screen bg-[#FCEFCB] p-6 gap-6">
             {posts.map((trip) => (
-                <Link key={trip.id} to={`/trip/${trip.id}`} className="w-full hover:scale-101 transition">
+                <Link key={trip.id} to={`/api/trip/${trip.id}`} className="w-full hover:scale-101 transition">
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-2xl">{trip.name}</CardTitle>
