@@ -44,7 +44,8 @@ const journeyQuotes = [
   }
 ];
 
-const token = localStorage.getItem("authToken");
+// THIS LINE WAS REMOVED AS IT WAS CAUSING THE ERROR
+// const token = localStorage.getItem("authToken"); 
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -58,24 +59,34 @@ const Dashboard = () => {
     return scenicPhotos[Math.floor(Math.random() * scenicPhotos.length)];
   };
 
-  // Function to fetch all spots
+  // THIS FUNCTION WAS UPDATED TO FIX THE ERROR
   const fetchAllSpots = async () => {
-    try {
-      const response = await fetch(`http://13.202.224.27:3000/api/stop/getAllStop`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+    // Get the most up-to-date token from localStorage
+    const token = localStorage.getItem('authToken');
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch all spots.");
-      }
-      const data = await response.json();
-      setSpots(data);
+    // If there's no token, don't even try to make the call
+    if (!token) {
+        console.error("Cannot fetch spots: user is not authenticated.");
+        return; // Stop execution
+    }
+
+    try {
+        const response = await fetch(`http://13.202.224.27:3000/api/stop/getAllStop`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                // This now uses the fresh token
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch all spots.");
+        }
+        const data = await response.json();
+        setSpots(data);
     } catch (error) {
-      console.error("Error fetching all spots:", error.message);
+        console.error("Error fetching all spots:", error.message);
     }
   };
 
@@ -88,23 +99,23 @@ const Dashboard = () => {
       if (token) {
         try {
           // Check authentication
-         const authResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/me`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
-  });
+         const authResponse = await fetch(`http://13.202.224.27:3000/api/auth/me`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
 
           if (authResponse.ok) {
             setIsAuth(true);
 
             // Fetch trips after successful authentication
-            const tripsResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/trips`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
+            const tripsResponse = await fetch(`http://13.202.224.27:3000/api/trips`, {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
 
             if (!tripsResponse.ok) {
               throw new Error('Failed to fetch trips');
