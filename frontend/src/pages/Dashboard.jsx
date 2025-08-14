@@ -91,7 +91,7 @@ const Dashboard = () => {
   };
 
   // useEffect to handle authentication and fetching user trips
-  useEffect(() => {
+useEffect(() => {
     const checkAuthAndFetchData = async () => {
       setLoading(true);
       const token = localStorage.getItem('authToken');
@@ -110,6 +110,8 @@ const Dashboard = () => {
           if (authResponse.ok) {
             setIsAuth(true);
 
+            //fetch data after authentication completes
+
             // Fetch trips after successful authentication
             const tripsResponse = await fetch(`http://13.202.224.27:3000/api/trips`, {
               headers: {
@@ -126,6 +128,10 @@ const Dashboard = () => {
               const sortedTrips = pastTrips.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
               setTrips(sortedTrips);
             }
+
+            
+            fetchAllSpots(); 
+
           } else {
             setIsAuth(false);
             navigate('/login');
@@ -145,7 +151,8 @@ const Dashboard = () => {
     };
 
     checkAuthAndFetchData();
-    fetchAllSpots();
+   
+
   }, [navigate]);
 
   const handleNewTripClick = () => {
