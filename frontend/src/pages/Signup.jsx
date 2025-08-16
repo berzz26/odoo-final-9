@@ -85,9 +85,9 @@ const Signup = () => {
   };
 
 return (
-    <div className="bg-white min-h-screen w-full text-[#A86523] font-sans flex items-center justify-center p-4 sm:p-6 lg:p-8">
+    <div className="bg-white min-h-screen w-screen text-[#A86523] font-sans flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-4xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 text-[#A86523]">Create Your Account</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 text-[#A86523]">SignUp Page</h1>
 
         <form onSubmit={handleSubmit} className="bg-[#FCEFCB] border-2 border-[#FAD59A] rounded-2xl p-6 sm:p-8 space-y-6 shadow-lg">
           {/* Avatar Upload */}
