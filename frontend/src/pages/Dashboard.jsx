@@ -44,9 +44,6 @@ const journeyQuotes = [
   }
 ];
 
-// THIS LINE WAS REMOVED AS IT WAS CAUSING THE ERROR
-// const token = localStorage.getItem("authToken"); 
-
 const Dashboard = () => {
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
@@ -59,15 +56,11 @@ const Dashboard = () => {
     return scenicPhotos[Math.floor(Math.random() * scenicPhotos.length)];
   };
 
-  // THIS FUNCTION WAS UPDATED TO FIX THE ERROR
   const fetchAllSpots = async () => {
-    // Get the most up-to-date token from localStorage
     const token = localStorage.getItem('authToken');
-
-    // If there's no token, don't even try to make the call
     if (!token) {
         console.error("Cannot fetch spots: user is not authenticated.");
-        return; // Stop execution
+        return;
     }
 
     try {
@@ -75,7 +68,6 @@ const Dashboard = () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                // This now uses the fresh token
                 'Authorization': `Bearer ${token}`,
             },
         });
@@ -98,8 +90,7 @@ useEffect(() => {
 
       if (token) {
         try {
-          // Check authentication
-         const authResponse = await fetch(`/api/auth/me`, {
+          const authResponse = await fetch(`/api/auth/me`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -109,10 +100,6 @@ useEffect(() => {
 
           if (authResponse.ok) {
             setIsAuth(true);
-
-            //fetch data after authentication completes
-
-            // Fetch trips after successful authentication
             const tripsResponse = await fetch(`/api/trips`, {
               headers: {
                 'Authorization': `Bearer ${token}`
@@ -128,10 +115,7 @@ useEffect(() => {
               const sortedTrips = pastTrips.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
               setTrips(sortedTrips);
             }
-
-            
             fetchAllSpots(); 
-
           } else {
             setIsAuth(false);
             navigate('/login');
@@ -149,10 +133,7 @@ useEffect(() => {
         setLoading(false);
       }
     };
-
     checkAuthAndFetchData();
-   
-
   }, [navigate]);
 
   const handleNewTripClick = () => {
@@ -177,12 +158,12 @@ useEffect(() => {
     if (isAuth) {
       if (trips.length === 0) {
         return (
-          <div className="text-center py-12">
+          <div className="text-center py-12 px-4">
             <svg className="mx-auto h-12 w-12 text-amber-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            <p className="text-amber-800 text-lg">You haven't completed any trips yet.</p>
+            <p className="text-amber-800 text-base sm:text-lg">You haven't completed any trips yet.</p>
             <p className="text-amber-600 text-sm mt-2">Start planning your first adventure!</p>
           </div>
         );
@@ -200,17 +181,17 @@ useEffect(() => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
-              <div className="p-6">
-                <h4 className="text-xl font-bold text-amber-900 mb-2">{trip.name}</h4>
-                <p className="text-sm text-amber-700 mb-4 line-clamp-2">{trip.description}</p>
-                <div className="flex items-center text-sm text-amber-600 mb-3">
-                  <svg className="w-4 h-4 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+              <div className="p-4 md:p-6">
+                <h4 className="text-lg md:text-xl font-bold text-amber-900 mb-2 truncate">{trip.name}</h4>
+                <p className="text-sm text-amber-700 mb-4 line-clamp-2 h-10">{trip.description}</p>
+                <div className="flex items-center text-xs sm:text-sm text-amber-600 mb-3">
+                  <svg className="w-4 h-4 mr-2 text-amber-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"></path>
                   </svg>
                   <span>{formatDate(trip.startDate)} - {formatDate(trip.endDate)}</span>
                 </div>
-                <div className="flex items-center text-sm text-amber-600">
-                  <svg className="w-4 h-4 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                <div className="flex items-center text-xs sm:text-sm text-amber-600">
+                  <svg className="w-4 h-4 mr-2 text-amber-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"></path>
                   </svg>
                   <span className="truncate">{trip.stops?.map(stop => stop.city).join(', ') || 'No stops specified'}</span>
@@ -259,7 +240,7 @@ useEffect(() => {
           <div key={index} className="group relative bg-white border border-amber-200 rounded-xl h-32 overflow-hidden hover:border-amber-400 transition-all duration-300 cursor-pointer hover:scale-105 shadow-md hover:shadow-lg">
             <img src={region.image} alt={region.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
             <div className="absolute inset-0 bg-gradient-to-t from-amber-900/60 to-transparent"></div>
-            <div className="absolute bottom-2 left-2 right-2">
+            <div className="absolute bottom-2 left-2 right-2 px-1">
               <h4 className="text-white font-semibold text-sm truncate">{region.name}</h4>
             </div>
           </div>
@@ -269,67 +250,66 @@ useEffect(() => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen text-amber-900 font-sans">
-      <div className="min-h-screen flex flex-col items-center justify-start">
-        <div className="w-full max-w-screen px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-8 mx-auto">
-        {/* Hero Carousel Section */}
-        <div className="rounded-2xl overflow-hidden shadow-xl">
-          <Carousel
-            showArrows={true}
-            showThumbs={false}
-            infiniteLoop={true}
-            autoPlay={true}
-            interval={6000}
-            className="hero-carousel"
-          >
-            {journeyQuotes.map((item, index) => (
-              <div key={index} className="relative h-96 md:h-[500px]">
-                <img 
-                  src={item.image} 
-                  alt={`Journey quote ${index + 1}`} 
-                  className="w-full h-full object-cover" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center px-6 md:px-12 max-w-4xl">
-                    <h2 className="text-2xl md:text-4xl lg:text-5xl text-white font-bold mb-4 leading-tight" style={{ fontFamily: '"Caveat", cursive' }}>
-                      "{item.quote}"
-                    </h2>
-                    <p className="text-amber-200 text-lg md:text-xl italic">— {item.author}</p>
+    <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen w-screen text-amber-900 font-sans">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="py-6 md:py-8 space-y-8">
+          {/* Hero Carousel Section */}
+          <div className="rounded-2xl overflow-hidden shadow-xl">
+            <Carousel
+              showArrows={true}
+              showThumbs={false}
+              infiniteLoop={true}
+              autoPlay={true}
+              interval={6000}
+              className="hero-carousel"
+            >
+              {journeyQuotes.map((item, index) => (
+                <div key={index} className="relative h-80 sm:h-96 md:h-[500px]">
+                  <img 
+                    src={item.image} 
+                    alt={`Journey quote ${index + 1}`} 
+                    className="w-full h-full object-cover" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center px-4 sm:px-6 md:px-12 max-w-4xl">
+                      <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl text-white font-bold mb-4 leading-tight" style={{ fontFamily: '"Caveat", cursive' }}>
+                        "{item.quote}"
+                      </h2>
+                      <p className="text-amber-200 text-sm sm:text-base md:text-xl italic">— {item.author}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </Carousel>
-        </div>
+              ))}
+            </Carousel>
+          </div>
 
-      
+          {/* Popular Regional Selections */}
+          <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-amber-100">
+            <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-4 sm:mb-6">Popular Regional Selections</h3>
+            {renderPopularRegions()}
+          </div>
 
-        {/* Popular Regional Selections */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
-          <h3 className="text-2xl font-bold text-amber-900 mb-6">Popular Regional Selections</h3>
-          {renderPopularRegions()}
-        </div>
-
-        {/* Previous Trips / Inspiration Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
-          <h3 className="text-2xl font-bold text-amber-900 mb-6">
-            {isAuth ? "Your Previous Trips" : "Get Inspired for Your Next Trip"}
-          </h3>
-          {renderContent()}
-        </div>
+          {/* Previous Trips / Inspiration Section */}
+          <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-amber-100">
+            <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-4 sm:mb-6">
+              {isAuth ? "Your Previous Trips" : "Get Inspired for Your Next Trip"}
+            </h3>
+            {renderContent()}
+          </div>
         </div>
       </div>
 
       {/* Floating Action Button */}
       <button
         onClick={handleNewTripClick}
-        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-full px-6 py-4 shadow-2xl hover:from-amber-600 hover:to-orange-600 transition-all duration-300 hover:scale-110 flex items-center gap-2 group"
+        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-full p-4 sm:px-6 sm:py-4 shadow-2xl hover:from-amber-600 hover:to-orange-600 transition-all duration-300 hover:scale-110 flex items-center gap-2 group"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 group-hover:rotate-90 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
-        <span>Plan a trip</span>
+        {/* Text is hidden on small screens and appears on sm breakpoint and up */}
+        <span className="hidden sm:inline">Plan a trip</span>
       </button>
     </div>
   );

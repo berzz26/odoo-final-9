@@ -47,48 +47,50 @@ export default function ItenarySection() {
     }, []); 
 
     return (
-        <div className='flex min-h-screen w-screen bg-[#FCEFCB] p-6'>
-            <div>
-                
-                <div className='text-4xl italic'>You have the following planned trips.</div>
+  <div className="flex min-h-screen w-screen bg-[#FCEFCB] p-4 sm:p-6">
+    <div className="w-full max-w-7xl mx-auto">
+      <div className="text-2xl sm:text-3xl md:text-4xl italic text-center sm:text-left">
+        You have the following planned trips.
+      </div>
 
-                <div className='my-10'>
-                    {/* Conditional Rendering based on fetch state */}
-                    {loading && <p className="text-center">Loading trips...</p>}
-                    
-                    {error && <p className="text-center text-red-500">Error: {error}</p>}
-                    
-                    {!loading && !error && (
-                        <div className='flex flex-wrap gap-4'>
-                            {trips.length > 0 ? (
-                                trips.map((t) => (
-                                    <Link key={t.id} to={`/trips/${t.id}`} className="block group">
-                                        <Card className="w-80 h-80 transition-transform group-hover:scale-105">
-                                            <CardHeader>
-                                                <img
-                                                    // CORRECTED: Use 'coverPhoto' from your API data
-                                                    src={t.coverPhoto}
-                                                    // CORRECTED: Use 'name' for the alt text
-                                                    alt={t.name}
-                                                    className="h-40 w-full object-cover rounded-md"
-                                                    // Add a fallback for broken image links
-                                                    onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/600x400/EEE/31343C?text=Image+Not+Found'; }}
-                                                />
-                                                <CardTitle className="py-2 text-center">
-                                                    {/* CORRECTED: Display the trip 'name' */}
-                                                    {t.name}
-                                                </CardTitle>
-                                            </CardHeader>
-                                        </Card>
-                                    </Link>
-                                ))
-                            ) : (
-                                <p>No trips found.</p>
-                            )}
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
+      <div className="my-8 sm:my-10">
+        {/* Conditional Rendering */}
+        {loading && <p className="text-center">Loading trips...</p>}
+
+        {error && <p className="text-center text-red-500">Error: {error}</p>}
+
+        {!loading && !error && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {trips.length > 0 ? (
+              trips.map((t) => (
+                <Link key={t.id} to={`/trips/${t.id}`} className="group">
+                  <Card className="w-full h-full transition-transform group-hover:scale-105">
+                    <CardHeader>
+                      <img
+                        src={t.coverPhoto}
+                        alt={t.name}
+                        className="h-40 sm:h-48 md:h-56 w-full object-cover rounded-md"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://placehold.co/600x400/EEE/31343C?text=Image+Not+Found";
+                        }}
+                      />
+                      <CardTitle className="py-2 text-center text-base sm:text-lg md:text-xl">
+                        {t.name}
+                      </CardTitle>
+                    </CardHeader>
+                  </Card>
+                </Link>
+              ))
+            ) : (
+              <p className="text-center">No trips found.</p>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
 }

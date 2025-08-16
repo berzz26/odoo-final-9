@@ -60,63 +60,67 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[#FFFFFF] min-h-screen w-screen text-[#A86523] font-sans flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center mb-6 text-[#A86523]">Login Page</h1>
-        
-        <form onSubmit={handleSubmit} className="bg-[#FCEFCB] border-2 border-[#FAD59A] rounded-lg p-8 space-y-6 shadow-lg">
-          
-          <div className="flex justify-center">
-            {/* You can add an icon or image here if needed */}
+  <div className="bg-[#FFFFFF] min-h-screen w-screen text-[#A86523] font-sans flex items-center justify-center p-4">
+    <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl">
+      <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6 text-[#A86523]">
+        Login Page
+      </h1>
+
+      <form
+        onSubmit={handleSubmit}
+        className="bg-[#FCEFCB] border-2 border-[#FAD59A] rounded-lg p-6 sm:p-8 space-y-6 shadow-lg"
+      >
+        <div className="max-w-sm mx-auto space-y-6 w-full">
+          <div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-[#FFFFFF] p-3 rounded-lg border-2 border-[#FAD59A] focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70 text-sm sm:text-base"
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-[#FFFFFF] p-3 rounded-lg border-2 border-[#FAD59A] focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70 text-sm sm:text-base"
+              required
+            />
           </div>
 
-          <div className="max-w-sm mx-auto space-y-6">
-            <div>
-              <input 
-                type="email" 
-                name="email" 
-                placeholder="Email Address" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                className="w-full bg-[#FFFFFF] p-3 rounded-lg border-2 border-[#FAD59A] focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" 
-                required 
-              />
-            </div>
-            <div>
-              <input 
-                type="password" 
-                name="password" 
-                placeholder="Password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                className="w-full bg-[#FFFFFF] p-3 rounded-lg border-2 border-[#FAD59A] focus:outline-none focus:border-[#A86523] placeholder:text-[#A86523]/70" 
-                required 
-              />
-            </div>
-            
-            {error && <p className="text-red-500 text-center text-sm">{error}</p>}
+          {error && <p className="text-red-500 text-center text-sm">{error}</p>}
 
-            <div className="text-center pt-4">
-              <button 
-                type="submit" 
-                className="w-full bg-[#A86523] text-white rounded-full px-8 py-3 shadow-lg hover:bg-[#A86523]/90 transition-transform hover:scale-105 font-semibold disabled:bg-gray-500 disabled:cursor-not-allowed" 
-                disabled={loading}
-              >
-                {loading ? 'Logging in...' : 'Login'}
-              </button>
-            </div>
-
-            <p className="text-center text-sm text-[#A86523]/90 pt-4">
-              Don't have an account?{' '}
-              <Link to="/signup" className="font-semibold text-[#A86523] hover:underline">
-                Sign Up
-              </Link>
-            </p>
+          <div className="text-center pt-2 sm:pt-4">
+            <button
+              type="submit"
+              className="w-full bg-[#A86523] text-white rounded-full px-6 py-3 sm:px-8 sm:py-3 shadow-lg hover:bg-[#A86523]/90 transition-transform hover:scale-105 font-semibold text-sm sm:text-base disabled:bg-gray-500 disabled:cursor-not-allowed"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
           </div>
-        </form>
-      </div>
+
+          <p className="text-center text-xs sm:text-sm text-[#A86523]/90 pt-4">
+            Don&apos;t have an account?{" "}
+            <Link
+              to="/signup"
+              className="font-semibold text-[#A86523] hover:underline"
+            >
+              Sign Up
+            </Link>
+          </p>
+        </div>
+      </form>
     </div>
-  );
+  </div>
+);
+
 };
 
 
