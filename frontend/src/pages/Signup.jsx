@@ -54,6 +54,7 @@ const Signup = () => {
       const signupResult = await signupResponse.json();
       if (!signupResponse.ok) throw new Error(signupResult.message || 'User registration failed.');
 
+      
       const { token } = signupResult.user || {};
       if (!token) throw new Error('No token returned from signup.');
 

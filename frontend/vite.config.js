@@ -7,15 +7,17 @@ export default defineConfig({
   plugins: [react(), tailwind()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'), // <-- alias
+      '@': path.resolve(__dirname, 'src'),
     },
   },
- server: {
+  server: {
+    // This makes your dev server accessible on your local network
     host: true, 
+    // The port your dev server will run on
     port: 8080, 
-    strictPort: true,
-    allowedHosts: [
-      'ec2-13-202-224-27.ap-south-1.compute.amazonaws.com'
-    ],
+    // The proxy is the only part needed to connect to the backend
+    proxy: {
+      '/api': 'http://localhost:3000',
+    },
   },
 })
