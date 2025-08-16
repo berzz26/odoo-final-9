@@ -77,7 +77,7 @@ The app must properly use a **relational database** to store and query user-spec
 - Skeleton loaders and optimistic UI where applicable
 
 -  **deployment-link**
-    http://13.202.224.27:8080/   
+    https://dgnfmxxe9m1ty.cloudfront.net/   
 
 
 
