@@ -17,6 +17,7 @@ const Signup = () => {
   const [avatarFile, setAvatarFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null); // ✅ new state for success
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +36,7 @@ const Signup = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setSuccess(null);
 
     try {
       // Signup API call
@@ -54,7 +56,6 @@ const Signup = () => {
       const signupResult = await signupResponse.json();
       if (!signupResponse.ok) throw new Error(signupResult.message || 'User registration failed.');
 
-      
       const { token } = signupResult.user || {};
       if (!token) throw new Error('No token returned from signup.');
 
@@ -64,17 +65,17 @@ const Signup = () => {
         avatarFormData.append('avatar', avatarFile);
 
         const avatarResponse = await fetch(`/api/upload/avatar`, {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${token}` },
-    body: avatarFormData,
-  });
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: avatarFormData,
+        });
 
         const avatarResult = await avatarResponse.json();
         if (!avatarResponse.ok) throw new Error(avatarResult.message || 'Avatar upload failed.');
       }
 
       localStorage.setItem('authToken', token);
-      alert('Registration successful!');
+      setSuccess('Registration successful! ✅'); // ✅ show success box
       navigate('/');
     } catch (err) {
       setError(err.message);
@@ -83,7 +84,7 @@ const Signup = () => {
     }
   };
 
-return (
+  return (
     <div className="bg-white min-h-screen w-screen text-[#A86523] font-sans flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
         <h1 className="text-3xl font-bold text-center mb-6 text-[#A86523]">Sign Up Page</h1>
@@ -159,7 +160,9 @@ return (
             />
           </div>
 
-          {error && <p className="text-red-600 text-center">{error}</p>}
+          {/* ✅ Static Message Box */}
+          {error && <p className="text-red-600 text-center bg-red-100 p-2 rounded-lg">{error}</p>}
+          {success && <p className="text-green-600 text-center bg-green-100 p-2 rounded-lg">{success}</p>}
 
           <button
             type="submit"
