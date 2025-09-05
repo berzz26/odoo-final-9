@@ -12,8 +12,9 @@ jobs:
     steps:
       - name: Insert heartbeat row
         run: |
-          curl -s "https://project/ydidkzndnksvghtdzmql.supabase.co/rest/v1/heartbeat" \
-          -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-          -H "Content-Type: application/json" \
-          -d '{"pinged_at": "'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'"}'
+         curl -s -o /dev/null -w "%{http_code}\n" \
+            "https://ydidkzndnksvghtdzmql.supabase.co/rest/v1/heartbeat" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{"pinged_at": "'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'"}'
